@@ -4,6 +4,7 @@ import Main from '../page-main/page-main';
 import SignIn from '../page-sign-in/page-sign-in';
 import Favorites from '../page-favorites/page-favorites';
 import Room from '../page-room/page-room';
+import NotFound from '../page-not-found/page-not-found';
 import PropTypes from 'prop-types';
 
 const App = (props) => {
@@ -17,28 +18,7 @@ const App = (props) => {
         <Route path="/" exact >
           <Main offersAmountToShow={offersAmountToShow} />
         </Route>
-        <Route
-          render={() => (
-            <>
-              <h1>
-                404.
-                <br />
-                <small>Page not found</small>
-              </h1>
-              <Link to="/">Go to main page</Link>
-            </>
-          )}
-        />
-        {/* <Route>
-          <>
-            <h1>
-              404.
-              <br />
-              <small>Page not found</small>
-            </h1>
-            <Link to="/">Go to main page</Link>
-          </>
-        </Route> */}
+        <Route component={NotFound}/>
       </Switch>
     </BrowserRouter>
   );
