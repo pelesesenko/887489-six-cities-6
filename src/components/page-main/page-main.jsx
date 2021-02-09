@@ -1,12 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 
-import OfferCard from '../offer-card/offer-card';
+import OffersList from '../offers-list/offers-list';
 import PropTypes from 'prop-types';
 
-const Main = (props) => {
+const PageMain = (props) => {
 
-  const {offersAmountToShow} = props;
+  const [cityName, setCityName] = useState(`Paris`);
+  const {offersAmountToShow, offers} = props;
+  const offersToShow = offers.filter((offer) => offer.city.name === cityName).slice(0, offersAmountToShow);
+  console.log(offersToShow);
 
   return (
     <div className="page page--gray page--main">
@@ -92,7 +95,7 @@ const Main = (props) => {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {Array(offersAmountToShow).fill(1).map((_, i) => <OfferCard key = {i} />)}
+                <OffersList items={offersToShow}/>
               </div>
             </section>
             <div className="cities__right-section">
@@ -105,8 +108,8 @@ const Main = (props) => {
   );
 };
 
-Main.propTypes = {
+PageMain.propTypes = {
   offersAmountToShow: PropTypes.number.isRequired,
 };
 
-export default Main;
+export default PageMain;

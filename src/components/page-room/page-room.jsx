@@ -1,8 +1,11 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 // import PropTypes from 'prop-types';
 
-const Room = () => (
+const PageRoom = () => {
+  // console.log(useParams());
+  return (
+
   <div className="page">
     <header className="header">
       <div className="container">
@@ -317,11 +320,11 @@ const Room = () => (
       </div>
     </main>
   </div>
-);
+)};
 
 // Room.propTypes = {
 //   offersAmountToShow: PropTypes.number.isRequired,
 // };
 
-export default Room;
+export default PageRoom;
 

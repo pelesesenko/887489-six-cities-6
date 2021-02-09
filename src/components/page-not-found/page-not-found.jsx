@@ -1,8 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-const NotFound = () => (
-  <div className="page" style={{height: "90vh"}}>
+const PageNotFound = () => (
+  <div className="page" style={{height: `90vh`}}>
     <header className="header">
       <div className="container">
         <div className="header__wrapper">
@@ -34,4 +34,4 @@ const NotFound = () => (
 );
 
 
-export default NotFound;
+export default PageNotFound;
