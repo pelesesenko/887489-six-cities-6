@@ -1,15 +1,15 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {prepareRating, upFirst} from '../../utilities/utilities';
+import {hotelPropTypes} from '../../prop-types';
 
 const OfferCard = ({offer}) => {
+
   const {isPremium, previewImage, price, title, isFavorite, rating, type, id} = offer;
-  const prepRating = Math.round(rating)*20 + `%`;
-  const prepType = type.slice(0, 1).toUpperCase() + type.slice(1);
   const offerLink = `/offer/${id}`;
 
-
   return (
-    <article className="cities__place-card place-card">
+    <article data-offer-id={id} className="cities__place-card place-card">
       {isPremium && <div className="place-card__mark">
         <span>Premium</span>
       </div>}
@@ -32,22 +32,28 @@ const OfferCard = ({offer}) => {
             <svg className="place-card__bookmark-icon" width={18} height={19}>
               <use xlinkHref="#icon-bookmark" />
             </svg>
-            <span className="visually-hidden">To bookmarks</span>
+            <span className="visually-hidden">
+              {`${isFavorite ? `In` : `To`} bookmarks`}
+            </span>
           </button>
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: prepRating}} />
+            <span style={{width: prepareRating(rating)}} />
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
           <Link to={offerLink}>{title}</Link>
         </h2>
-        <p className="place-card__type">{prepType}</p>
+        <p className="place-card__type">{upFirst(type)}</p>
       </div>
     </article>
   );
+};
+
+OfferCard.propTypes = {
+  offer: hotelPropTypes
 };
 
 export default OfferCard;

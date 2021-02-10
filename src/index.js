@@ -13,6 +13,6 @@ ReactDOM.render(
       offers={Offers}
       reviews={Reviews}
       favorites={Favorites}
-      />,
+    />,
     document.querySelector(`#root`)
 );

@@ -6,6 +6,7 @@ import PageFavorites from '../page-favorites/page-favorites';
 import PageRoom from '../page-room/page-room';
 import PageNotFound from '../page-not-found/page-not-found';
 import PropTypes from 'prop-types';
+import {hotelsPropTypes, commentsPropTypes} from '../../prop-types';
 
 const App = (props) => {
   const {offersAmountToShow, offers, reviews, favorites} = props;
@@ -17,7 +18,7 @@ const App = (props) => {
           <PageFavorites favorites={favorites}/>
         </Route>
         <Route path="/offer/:id?" exact>
-          <PageRoom reviews={reviews}/>
+          <PageRoom reviews={reviews} offer={offers[1]}/>
         </Route>
         <Route path="/" exact>
           <PageMain offersAmountToShow={offersAmountToShow} offers={offers}/>
@@ -30,6 +31,9 @@ const App = (props) => {
 
 App.propTypes = {
   offersAmountToShow: PropTypes.number.isRequired,
+  offers: hotelsPropTypes,
+  favorites: hotelsPropTypes,
+  reviews: commentsPropTypes
 };
 
 export default App;

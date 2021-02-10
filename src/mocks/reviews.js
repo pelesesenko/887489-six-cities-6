@@ -10,7 +10,7 @@ export const Reviews = [
     },
     rating: 3,
     comment: `I stayed here for one night and it was an unpleasant experience.`,
-    date: `2021-01-23T08:17:53.220Z`,
+    date: `2021-02-23T08:17:53.220Z`,
   },
   {
     id: 2,
