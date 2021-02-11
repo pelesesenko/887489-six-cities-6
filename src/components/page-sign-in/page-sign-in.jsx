@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 // import PropTypes from 'prop-types';
 
-const SignIn = () => (
+const PageSignIn = () => (
   <div className="page page--gray page--login">
     <header className="header">
       <div className="container">
@@ -58,5 +58,5 @@ const SignIn = () => (
 //   offersAmountToShow: PropTypes.number.isRequired,
 // };
 
-export default SignIn;
+export default PageSignIn;
 

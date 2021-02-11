@@ -1,12 +1,25 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 
-import OfferCard from '../offer-card/offer-card';
+import OffersList from '../offers-list/offers-list';
 import PropTypes from 'prop-types';
+import {hotelsPropTypes} from '../../prop-types';
 
-const Main = (props) => {
+const PageMain = (props) => {
 
-  const {offersAmountToShow} = props;
+  const {offersAmountToShow, offers} = props;
+  const [cityName, setCityName] = useState(`Paris`);
+
+  const handleCityClick = (evt) => {
+    const target = evt.target.closest(`li`);
+
+    if (!target) {
+      return;
+    }
+    setCityName(target.querySelector(`span`).innerText);
+  };
+
+  const offersToShow = offers.filter((offer) => offer.city.name === cityName).slice(0, offersAmountToShow);
 
   return (
     <div className="page page--gray page--main">
@@ -37,34 +50,40 @@ const Main = (props) => {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <ul className="locations__list tabs__list">
+            <ul onClick={handleCityClick} className="locations__list tabs__list">
               <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
+                <a className=
+                  {`locations__item-link tabs__item ${cityName === `Paris` ? `tabs__item--active` : null}`}>
                   <span>Paris</span>
                 </a>
               </li>
               <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
+                <a className=
+                  {`locations__item-link tabs__item ${cityName === `Cologne` ? `tabs__item--active` : null}`}>
                   <span>Cologne</span>
                 </a>
               </li>
               <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
+                <a className=
+                  {`locations__item-link tabs__item ${cityName === `Brussels` ? `tabs__item--active` : null}`}>
                   <span>Brussels</span>
                 </a>
               </li>
               <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
+                <a className=
+                  {`locations__item-link tabs__item ${cityName === `Amsterdam` ? `tabs__item--active` : null}`}>
                   <span>Amsterdam</span>
                 </a>
               </li>
               <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
+                <a className=
+                  {`locations__item-link tabs__item ${cityName === `Hamburg` ? `tabs__item--active` : null}`}>
                   <span>Hamburg</span>
                 </a>
               </li>
               <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
+                <a className=
+                  {`locations__item-link tabs__item ${cityName === `Dusseldorf` ? `tabs__item--active` : null}`}>
                   <span>Dusseldorf</span>
                 </a>
               </li>
@@ -91,9 +110,7 @@ const Main = (props) => {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                {Array(offersAmountToShow).fill(1).map((_, i) => <OfferCard key = {i} />)}
-              </div>
+              <OffersList items={offersToShow}/>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map" />
@@ -105,8 +122,9 @@ const Main = (props) => {
   );
 };
 
-Main.propTypes = {
+PageMain.propTypes = {
   offersAmountToShow: PropTypes.number.isRequired,
+  offers: hotelsPropTypes,
 };
 
-export default Main;
+export default PageMain;
