@@ -7,11 +7,23 @@ import {hotelsPropTypes} from '../../prop-types';
 
 const PageMain = (props) => {
 
-  const [cityName, setCityName] = useState(``);
-  setCityName(`Paris`);
   const {offersAmountToShow, offers} = props;
-  const offersToShow = offers.filter((offer) => offer.city.name === cityName).slice(0, offersAmountToShow);
+  const [cityName, setCityName] = useState(`Paris`);
 
+  const handleCityClick = (evt) => {
+    const target = evt.target.closest(`li`);
+
+    if (!target) {
+      return;
+    }
+    evt.target.closest(`ul`).querySelectorAll(`a`)
+    .forEach((item) => item.classList.remove(`tabs__item--active`));
+
+    target.querySelector(`a`).classList.add(`tabs__item--active`);
+    setCityName(target.querySelector(`span`).innerText);
+  };
+
+  const offersToShow = offers.filter((offer) => offer.city.name === cityName).slice(0, offersAmountToShow);
 
   return (
     <div className="page page--gray page--main">
@@ -42,7 +54,7 @@ const PageMain = (props) => {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <ul className="locations__list tabs__list">
+            <ul onClick={handleCityClick} className="locations__list tabs__list">
               <li className="locations__item">
                 <a className="locations__item-link tabs__item" href="#">
                   <span>Paris</span>
