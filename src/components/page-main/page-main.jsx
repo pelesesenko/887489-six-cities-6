@@ -16,10 +16,6 @@ const PageMain = (props) => {
     if (!target) {
       return;
     }
-    evt.target.closest(`ul`).querySelectorAll(`a`)
-    .forEach((item) => item.classList.remove(`tabs__item--active`));
-
-    target.querySelector(`a`).classList.add(`tabs__item--active`);
     setCityName(target.querySelector(`span`).innerText);
   };
 
@@ -56,32 +52,38 @@ const PageMain = (props) => {
           <section className="locations container">
             <ul onClick={handleCityClick} className="locations__list tabs__list">
               <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
+                <a className=
+                  {`locations__item-link tabs__item ${cityName === `Paris` ? `tabs__item--active` : null}`}>
                   <span>Paris</span>
                 </a>
               </li>
               <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
+                <a className=
+                  {`locations__item-link tabs__item ${cityName === `Cologne` ? `tabs__item--active` : null}`}>
                   <span>Cologne</span>
                 </a>
               </li>
               <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
+                <a className=
+                  {`locations__item-link tabs__item ${cityName === `Brussels` ? `tabs__item--active` : null}`}>
                   <span>Brussels</span>
                 </a>
               </li>
               <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
+                <a className=
+                  {`locations__item-link tabs__item ${cityName === `Amsterdam` ? `tabs__item--active` : null}`}>
                   <span>Amsterdam</span>
                 </a>
               </li>
               <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
+                <a className=
+                  {`locations__item-link tabs__item ${cityName === `Hamburg` ? `tabs__item--active` : null}`}>
                   <span>Hamburg</span>
                 </a>
               </li>
               <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
+                <a className=
+                  {`locations__item-link tabs__item ${cityName === `Dusseldorf` ? `tabs__item--active` : null}`}>
                   <span>Dusseldorf</span>
                 </a>
               </li>
