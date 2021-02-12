@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {hotelsPropTypes} from '../../prop-types';
 
-import FavoriteCard from '../favorite-card/favorite-card';
+import OfferCard from '../offer-card/offer-card';
 
 const FavoritesGroup = ({group}) => {
   const {cityName, favoritesInCity} = group;
@@ -17,8 +17,8 @@ const FavoritesGroup = ({group}) => {
         </div>
       </div>
       <div className="favorites__places">
-        {favoritesInCity.map((favoriteOffer) =>
-          <FavoriteCard offer={favoriteOffer} key={favoriteOffer.id} />
+        {favoritesInCity.map((offer) =>
+          <OfferCard offer={offer} favFlag key={offer.id} />
         )}
       </div>
     </li>

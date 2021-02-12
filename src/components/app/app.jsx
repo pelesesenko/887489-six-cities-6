@@ -18,7 +18,7 @@ const App = (props) => {
           <PageFavorites favorites={favorites}/>
         </Route>
         <Route path="/offer/:id?" exact>
-          <PageRoom reviews={reviews} offer={offers[1]}/>
+          <PageRoom reviews={reviews} room={offers[1]} nearOffers={offers.slice(2, 5)}/>
         </Route>
         <Route path="/" exact>
           <PageMain offersAmountToShow={offersAmountToShow} offers={offers}/>
