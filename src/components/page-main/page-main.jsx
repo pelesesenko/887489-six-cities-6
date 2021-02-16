@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 
 import Header from '../header/header';
 import OffersList from '../offers-list/offers-list';
+import Map from '../map/map';
+
 import PropTypes from 'prop-types';
 import {hotelsPropTypes} from '../../prop-types';
 
@@ -19,7 +21,7 @@ const PageMain = (props) => {
     setCityName(target.querySelector(`span`).innerText);
   };
 
-  const offersToShow = offers.filter((offer) => offer.city.name === cityName).slice(0, offersAmountToShow);
+  const offersToShow = [...offers.filter((offer) => offer.city.name === cityName).slice(0, offersAmountToShow)];
 
   return (
     <div className="page page--gray page--main">
@@ -91,7 +93,9 @@ const PageMain = (props) => {
               <OffersList items={offersToShow}/>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map" />
+              <section className="cities__map map">
+                <Map offers={offersToShow} city={offersToShow[0].city}/>
+              </section>
             </div>
           </div>
         </div>

@@ -9,7 +9,7 @@ const OffersList = ({items}) => {
     if (activeItemId) {
       return;
     }
-    let target = evt.target.closest(`article`);
+    let target = evt.target.closest(`[data-offer-id]`);
     if (!target) {
       return;
     }
@@ -22,8 +22,7 @@ const OffersList = ({items}) => {
     }
     let relatedTarget = evt.relatedTarget;
     while (relatedTarget) {
-      if (relatedTarget
-        && relatedTarget.dataset
+      if (relatedTarget.dataset
         && relatedTarget.dataset.offerId === activeItemId) {
         return;
       }
