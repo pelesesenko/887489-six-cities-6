@@ -1,5 +1,5 @@
 import React from 'react';
-import {prepareRating, formatDate} from '../../utilities/utilities';
+import {prepareRating} from '../../utilities/utilities';
 import {commentPropTypes} from '../../prop-types';
 
 const Review = ({review}) => {
@@ -10,7 +10,9 @@ const Review = ({review}) => {
     comment,
     date
   } = review;
-  // console.log(new Date(date).toLocaleString(`en-CA`, {dateStyle: `short`}))
+  const dateAttribute = new Date(date).toLocaleString(`en-CA`, {dateStyle: `short`});
+  const dateText = new Date(date).toLocaleString(`en-CA`, {year: `numeric`, month: `long`});
+
   return (
     <li className="reviews__item">
       <div className="reviews__user user">
@@ -31,7 +33,7 @@ const Review = ({review}) => {
         <p className="reviews__text">
           {comment}
         </p>
-        <time className="reviews__time" dateTime="2019-04-24">{formatDate(date)}</time>
+        <time className="reviews__time" dateTime={dateAttribute}>{dateText}</time>
       </div>
     </li>
   );
