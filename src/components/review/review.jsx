@@ -10,7 +10,7 @@ const Review = ({review}) => {
     comment,
     date
   } = review;
-
+  // console.log(new Date(date).toLocaleString(`en-CA`, {dateStyle: `short`}))
   return (
     <li className="reviews__item">
       <div className="reviews__user user">

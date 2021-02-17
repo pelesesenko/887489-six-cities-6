@@ -39,6 +39,15 @@ export const hotelPropTypes = PropTypes.shape({
 
 export const hotelsPropTypes = PropTypes.arrayOf(hotelPropTypes).isRequired;
 
+export const cityPropTypes = PropTypes.shape({
+  name: PropTypes.string.isRequired,
+  location: PropTypes.shape({
+    latitude: PropTypes.number,
+    longitude: PropTypes.number,
+    zoom: PropTypes.number
+  }).isRequired
+}).isRequired;
+
 export const commentPropTypes = PropTypes.shape({
   id: PropTypes.number.isRequired,
   user: userPropTypes,

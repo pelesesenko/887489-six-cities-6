@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import OfferCard from '../offer-card/offer-card';
+import {MAIN_OFFERS} from '../../constants';
 import {hotelsPropTypes} from '../../prop-types';
 
 const OffersList = ({items}) => {
@@ -9,7 +10,7 @@ const OffersList = ({items}) => {
     if (activeItemId) {
       return;
     }
-    let target = evt.target.closest(`article`);
+    let target = evt.target.closest(`[data-offer-id]`);
     if (!target) {
       return;
     }
@@ -22,8 +23,7 @@ const OffersList = ({items}) => {
     }
     let relatedTarget = evt.relatedTarget;
     while (relatedTarget) {
-      if (relatedTarget
-        && relatedTarget.dataset
+      if (relatedTarget.dataset
         && relatedTarget.dataset.offerId === activeItemId) {
         return;
       }
@@ -36,7 +36,7 @@ const OffersList = ({items}) => {
     <div onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
       className="cities__places-list places__list tabs__content">
-      {items.map((item) => <OfferCard offer={item} key = {item.id} />)}
+      {items.map((item) => <OfferCard offer={item} cardName={MAIN_OFFERS} key = {item.id} />)}
     </div>
   );
 };

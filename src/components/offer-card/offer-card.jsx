@@ -1,33 +1,58 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import PropTypes from 'prop-types';
+
 import {prepareRating, upFirst} from '../../utilities/utilities';
 import {hotelPropTypes} from '../../prop-types';
+import {MAIN_OFFERS, FAVORITES_OFFERS, NEARBY_OFFERS} from '../../constants';
 
-const OfferCard = ({offer}) => {
+const OfferCard = ({offer, cardName}) => {
+
+  const cardSettings = {
+    [MAIN_OFFERS]: {
+      cardClass: `cities__place-card`,
+      imgWrapClass: `cities__image-wrapper`,
+      imgSizes: [260, 200],
+    },
+    [FAVORITES_OFFERS]: {
+      cardClass: `favorites__card`,
+      imgWrapClass: `favorites__image-wrapper`,
+      infoClass: `favorites__card-info`,
+      imgSizes: [150, 110],
+    },
+    [NEARBY_OFFERS]: {
+      cardClass: `near-places__card`,
+      imgWrapClass: `near-places__image-wrapper`,
+      imgSizes: [260, 200],
+    }
+  };
 
   const {isPremium, previewImage, price, title, isFavorite, rating, type, id} = offer;
   const offerLink = `/offer/${id}`;
 
   return (
-    <article data-offer-id={id} className="cities__place-card place-card">
+    <article data-offer-id={id}
+      className={`place-card ${cardSettings[cardName].cardClass}`}>
       {isPremium && <div className="place-card__mark">
         <span>Premium</span>
       </div>}
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={`place-card__image-wrapper ${cardSettings[cardName].imgWrapClass}`}>
         <Link to={offerLink}>
-          <img className="place-card__image" src={previewImage} width={260} height={200} alt="Place image" />
+          <img className="place-card__image"
+            src={previewImage}
+            width={cardSettings[cardName].imgSizes[0]}
+            height={cardSettings[cardName].imgSizes[1]}
+            alt="Place image" />
         </Link>
       </div>
-      <div className="place-card__info">
+      <div className={`place-card__info ${cardSettings[cardName].infoClass}`}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">€{price}</b>
-            <span className="place-card__price-text">/&nbsp;night</span>
+            <span className="place-card__price-text"> /&nbsp;night</span>
           </div>
           <button
-            className={`place-card__bookmark-button button ${isFavorite ?
-              `place-card__bookmark-button--active`
-              : null}`}
+            className={`place-card__bookmark-button button ${isFavorite && `place-card__bookmark-button--active`}`}
             type="button">
             <svg className="place-card__bookmark-icon" width={18} height={19}>
               <use xlinkHref="#icon-bookmark" />
@@ -53,7 +78,8 @@ const OfferCard = ({offer}) => {
 };
 
 OfferCard.propTypes = {
-  offer: hotelPropTypes
+  offer: hotelPropTypes,
+  cardName: PropTypes.string.isRequired,
 };
 
 export default OfferCard;
