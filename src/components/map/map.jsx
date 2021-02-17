@@ -1,11 +1,12 @@
 import React, {useEffect, useRef} from 'react';
 
 import {hotelsPropTypes, cityPropTypes} from '../../prop-types';
+import PropTypes from 'prop-types';
 
 import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-const Map = ({offers, city}) => {
+const Map = ({offers, city, style = {}}) => {
 
   const mapRef = useRef();
   useEffect(() => {
@@ -46,13 +47,14 @@ const Map = ({offers, city}) => {
 
 
   return (
-    <div id="map" style={{height: `100%`}} ref={mapRef}></div>
+    <div id="map" style={style} ref={mapRef}></div>
   );
 };
 
 Map.propTypes = {
   city: cityPropTypes,
   offers: hotelsPropTypes,
+  style: PropTypes.object
 };
 
 export default Map;

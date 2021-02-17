@@ -12,6 +12,7 @@ const OfferCard = ({offer, cardType}) => {
     [MAIN_OFFERS]: {
       cardClass: `cities__place-card`,
       imgWrapClass: `cities__image-wrapper`,
+      infoClass: ``,
       imgSizes: [260, 200],
     },
     [FAVORITES_OFFERS]: {
@@ -23,6 +24,7 @@ const OfferCard = ({offer, cardType}) => {
     [NEARBY_OFFERS]: {
       cardClass: `near-places__card`,
       imgWrapClass: `near-places__image-wrapper`,
+      infoClass: ``,
       imgSizes: [260, 200],
     }
   };
