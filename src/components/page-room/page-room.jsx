@@ -1,13 +1,13 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+
 import {hotelPropTypes, hotelsPropTypes, commentsPropTypes} from '../../prop-types';
 
 import Header from '../header/header';
 import ReviewForm from '../review-form/review-form';
 import RoomGalleryItem from '../room-gallery-item/room-gallery-item';
 import RoomGood from '../room-good/room-good';
-import Review from '../review/review';
-import OfferCard from '../offer-card/offer-card';
+import ReviewsList from '../reviews-list/reviews-list';
+import NearbyList from '../nearby-list/nearby-list';
 
 import {prepareRating, upFirst} from '../../utilities/utilities';
 
@@ -109,10 +109,7 @@ const PageRoom = ({room, reviews, nearOffers}) => {
                 </div>
               </div>
               <section className="property__reviews reviews">
-                <h2 className="reviews__title">Reviews · <span className="reviews__amount">1</span></h2>
-                <ul className="reviews__list">
-                  {reviews.map((review) => <Review review={review} key={review.id}/>)}
-                </ul>
+                <ReviewsList reviews={reviews}/>
                 <ReviewForm />
               </section>
             </div>
@@ -122,11 +119,7 @@ const PageRoom = ({room, reviews, nearOffers}) => {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <div className="near-places__list places__list">
-              {nearOffers.map((offer) =>
-                <OfferCard offer={offer} nearFlag key={offer.id} />
-              )}
-            </div>
+            <NearbyList nearOffers={nearOffers}/>
           </section>
         </div>
       </main>

@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import OfferCard from '../offer-card/offer-card';
+import {MAIN_OFFERS} from '../../constants';
 import {hotelsPropTypes} from '../../prop-types';
 
 const OffersList = ({items}) => {
@@ -35,7 +36,7 @@ const OffersList = ({items}) => {
     <div onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
       className="cities__places-list places__list tabs__content">
-      {items.map((item) => <OfferCard offer={item} mainFlag key = {item.id} />)}
+      {items.map((item) => <OfferCard offer={item} cardName={MAIN_OFFERS} key = {item.id} />)}
     </div>
   );
 };
