@@ -8,7 +8,7 @@ export const NearbyList = ({nearOffers}) => {
   return (
     <div className="near-places__list places__list">
       {nearOffers.map((offer) =>
-        <OfferCard offer={offer} cardName={NEARBY_OFFERS} key={offer.id} />
+        <OfferCard offer={offer} cardType={NEARBY_OFFERS} key={offer.id} />
       )}
     </div>
   );

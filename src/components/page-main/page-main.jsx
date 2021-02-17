@@ -23,6 +23,10 @@ const PageMain = (props) => {
 
   const offersToShow = [...offers.filter((offer) => offer.city.name === cityName).slice(0, offersAmountToShow)];
 
+  const mapStyle = {
+    height: `100%`
+  };
+
   return (
     <div className="page page--gray page--main">
       <Header mainFlag/>
@@ -94,7 +98,7 @@ const PageMain = (props) => {
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map offers={offersToShow} city={offersToShow[0].city}/>
+                <Map offers={offersToShow} city={offersToShow[0].city} style={mapStyle}/>
               </section>
             </div>
           </div>

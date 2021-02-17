@@ -6,12 +6,13 @@ import {prepareRating, upFirst} from '../../utilities/utilities';
 import {hotelPropTypes} from '../../prop-types';
 import {MAIN_OFFERS, FAVORITES_OFFERS, NEARBY_OFFERS} from '../../constants';
 
-const OfferCard = ({offer, cardName}) => {
+const OfferCard = ({offer, cardType}) => {
 
   const cardSettings = {
     [MAIN_OFFERS]: {
       cardClass: `cities__place-card`,
       imgWrapClass: `cities__image-wrapper`,
+      infoClass: ``,
       imgSizes: [260, 200],
     },
     [FAVORITES_OFFERS]: {
@@ -23,6 +24,7 @@ const OfferCard = ({offer, cardName}) => {
     [NEARBY_OFFERS]: {
       cardClass: `near-places__card`,
       imgWrapClass: `near-places__image-wrapper`,
+      infoClass: ``,
       imgSizes: [260, 200],
     }
   };
@@ -32,20 +34,20 @@ const OfferCard = ({offer, cardName}) => {
 
   return (
     <article data-offer-id={id}
-      className={`place-card ${cardSettings[cardName].cardClass}`}>
+      className={`place-card ${cardSettings[cardType].cardClass}`}>
       {isPremium && <div className="place-card__mark">
         <span>Premium</span>
       </div>}
-      <div className={`place-card__image-wrapper ${cardSettings[cardName].imgWrapClass}`}>
+      <div className={`place-card__image-wrapper ${cardSettings[cardType].imgWrapClass}`}>
         <Link to={offerLink}>
           <img className="place-card__image"
             src={previewImage}
-            width={cardSettings[cardName].imgSizes[0]}
-            height={cardSettings[cardName].imgSizes[1]}
+            width={cardSettings[cardType].imgSizes[0]}
+            height={cardSettings[cardType].imgSizes[1]}
             alt="Place image" />
         </Link>
       </div>
-      <div className={`place-card__info ${cardSettings[cardName].infoClass}`}>
+      <div className={`place-card__info ${cardSettings[cardType].infoClass}`}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">€{price}</b>
@@ -79,7 +81,7 @@ const OfferCard = ({offer, cardName}) => {
 
 OfferCard.propTypes = {
   offer: hotelPropTypes,
-  cardName: PropTypes.string.isRequired,
+  cardType: PropTypes.string.isRequired,
 };
 
 export default OfferCard;

@@ -7,6 +7,7 @@ import ReviewForm from '../review-form/review-form';
 import RoomGalleryItem from '../room-gallery-item/room-gallery-item';
 import RoomGood from '../room-good/room-good';
 import ReviewsList from '../reviews-list/reviews-list';
+import Map from '../map/map';
 import NearbyList from '../nearby-list/nearby-list';
 
 import {prepareRating, upFirst} from '../../utilities/utilities';
@@ -28,6 +29,12 @@ const PageRoom = ({room, reviews, nearOffers}) => {
     host,
     description
   } = room;
+
+  const mapStyle = {
+    height: `579px`,
+    width: `1144px`,
+    margin: `0 auto`
+  };
 
   return (
     <div className="page">
@@ -114,7 +121,9 @@ const PageRoom = ({room, reviews, nearOffers}) => {
               </section>
             </div>
           </div>
-          <section className="property__map map" />
+          <section className="property__map map">
+            <Map offers={nearOffers} city={nearOffers[0].city} style={mapStyle}/>
+          </section>
         </section>
         <div className="container">
           <section className="near-places places">
