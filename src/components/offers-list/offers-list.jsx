@@ -36,7 +36,7 @@ const OffersList = ({items}) => {
     <div onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
       className="cities__places-list places__list tabs__content">
-      {items.map((item) => <OfferCard offer={item} cardName={MAIN_OFFERS} key = {item.id} />)}
+      {items.map((item) => <OfferCard offer={item} cardType={MAIN_OFFERS} key = {item.id} />)}
     </div>
   );
 };
