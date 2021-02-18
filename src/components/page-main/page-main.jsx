@@ -11,6 +11,11 @@ const PageMain = (props) => {
 
   const {offersAmountToShow, offers} = props;
   const [cityName, setCityName] = useState(`Paris`);
+  const [activeOfferId, setActiveOfferId] = useState(null);
+
+  const changeActiveOfferId = (id) => {
+    setActiveOfferId(id);
+  };
 
   const handleCityClick = (evt) => {
     const target = evt.target.closest(`li`);
@@ -94,11 +99,11 @@ const PageMain = (props) => {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <OffersList items={offersToShow}/>
+              <OffersList items={offersToShow} changeActiveOfferId={changeActiveOfferId}/>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map offers={offersToShow} city={offersToShow[0].city} style={mapStyle}/>
+                <Map offers={offersToShow} city={offersToShow[0].city} style={mapStyle} activeOfferId={activeOfferId} markers={null}/>
               </section>
             </div>
           </div>

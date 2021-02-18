@@ -6,23 +6,35 @@ import PropTypes from 'prop-types';
 import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-const Map = ({offers, city, style = {}}) => {
+const Map = (props) => {
 
+  const {offers, city, style = {}, activeOfferId} = props;
+  console.log(activeOfferId)
   const mapRef = useRef();
+
+  const icon = leaflet.icon({
+    iconUrl: `./img/pin.svg`,
+    iconSize: [20, 30]
+  });
+
+  const activeIcon = leaflet.icon({
+    iconUrl: `./img/pin-active.svg`,
+    iconSize: [20, 30]
+  });
+
+  const markers = offers.map(
+    (offer) => leaflet
+    .marker(Object.values(offer.location).slice(0, 2), {icon}));
+
+
   useEffect(() => {
 
     const cityLocation = Object.values(city.location).slice(0, 2);
-    const points = offers.map((offer) => Object.values(offer.location).slice(0, 2));
-
-    const icon = leaflet.icon({
-      iconUrl: `./img/pin.svg`,
-      iconSize: [20, 30]
-    });
 
     mapRef.current = leaflet.map(`map`, {
       center: cityLocation,
       zoom: city.location.zoom,
-      zoomControl: true,
+      zoomControl: false,
       marker: true
     });
 
@@ -34,17 +46,29 @@ const Map = ({offers, city, style = {}}) => {
     .addTo(mapRef.current);
     mapRef.current.setView(cityLocation, city.location.zoom);
 
-    points.forEach((point) => {
-      leaflet
-      .marker(point, {icon})
-      .addTo(mapRef.current);
+    markers.forEach((marker) => {
+      marker.addTo(mapRef.current);
     });
 
     return () => {
       mapRef.current.remove();
     };
-  }, [offers, city]);
+  }, [city]);
 
+  useEffect(() => {
+
+    markers.forEach((marker, index) => {
+      marker.setIcon((offers[index].id === activeOfferId) ? activeIcon : icon)
+      .bindTooltip(offers[index].title)
+      .addTo(mapRef.current);
+    });
+
+    return () => {
+      markers.forEach((marker) => {
+        marker.remove()
+      })
+    }
+  }, [activeOfferId]);
 
   return (
     <div id="map" style={style} ref={mapRef}></div>

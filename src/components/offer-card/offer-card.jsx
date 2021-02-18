@@ -6,7 +6,7 @@ import {prepareRating, upFirst} from '../../utilities/utilities';
 import {hotelPropTypes} from '../../prop-types';
 import {MAIN_OFFERS, FAVORITES_OFFERS, NEARBY_OFFERS} from '../../constants';
 
-const OfferCard = ({offer, cardType}) => {
+const OfferCard = ({offer, cardType, changeActiveOfferId = () => {}}) => {
 
   const cardSettings = {
     [MAIN_OFFERS]: {
@@ -33,8 +33,11 @@ const OfferCard = ({offer, cardType}) => {
   const offerLink = `/offer/${id}`;
 
   return (
-    <article data-offer-id={id}
-      className={`place-card ${cardSettings[cardType].cardClass}`}>
+    <article
+      onMouseEnter={() => changeActiveOfferId(id)}
+      onMouseLeave={() => changeActiveOfferId(null)}
+      className={`place-card ${cardSettings[cardType].cardClass}`}
+    >
       {isPremium && <div className="place-card__mark">
         <span>Premium</span>
       </div>}
@@ -82,6 +85,7 @@ const OfferCard = ({offer, cardType}) => {
 OfferCard.propTypes = {
   offer: hotelPropTypes,
   cardType: PropTypes.string.isRequired,
+  changeActiveOfferId: PropTypes.func
 };
 
 export default OfferCard;
