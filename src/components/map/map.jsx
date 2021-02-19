@@ -9,23 +9,8 @@ import 'leaflet/dist/leaflet.css';
 const Map = (props) => {
 
   const {offers, city, style = {}, activeOfferId} = props;
-  console.log(activeOfferId)
+
   const mapRef = useRef();
-
-  const icon = leaflet.icon({
-    iconUrl: `./img/pin.svg`,
-    iconSize: [20, 30]
-  });
-
-  const activeIcon = leaflet.icon({
-    iconUrl: `./img/pin-active.svg`,
-    iconSize: [20, 30]
-  });
-
-  const markers = offers.map(
-    (offer) => leaflet
-    .marker(Object.values(offer.location).slice(0, 2), {icon}));
-
 
   useEffect(() => {
 
@@ -38,16 +23,26 @@ const Map = (props) => {
       marker: true
     });
 
-
     leaflet
     .tileLayer(`https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png`, {
       attribution: `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>`
     })
     .addTo(mapRef.current);
+
     mapRef.current.setView(cityLocation, city.location.zoom);
 
-    markers.forEach((marker) => {
-      marker.addTo(mapRef.current);
+    const icon = leaflet.icon({
+      iconUrl: `./img/pin.svg`,
+      iconSize: [20, 30]
+    });
+
+    const markers = offers.map((offer) => (
+      leaflet.marker(Object.values(offer.location).slice(0, 2), {icon})
+    ));
+
+    markers.forEach((marker, index) => {
+      marker.bindTooltip(offers[index].title)
+      .addTo(mapRef.current);
     });
 
     return () => {
@@ -57,16 +52,15 @@ const Map = (props) => {
 
   useEffect(() => {
 
-    markers.forEach((marker, index) => {
-      marker.setIcon((offers[index].id === activeOfferId) ? activeIcon : icon)
-      .bindTooltip(offers[index].title)
-      .addTo(mapRef.current);
+    const pins = [...mapRef.current.getPane(`markerPane`).children];
+
+    pins.forEach((pin) => {
+      pin.src = `./img/pin.svg`;
     });
 
-    return () => {
-      markers.forEach((marker) => {
-        marker.remove()
-      })
+    if (activeOfferId) {
+      const activeIndex = offers.findIndex((offer) => offer.id === activeOfferId);
+      pins[activeIndex].src = `./img/pin-active.svg`;
     }
   }, [activeOfferId]);
 
@@ -78,7 +72,8 @@ const Map = (props) => {
 Map.propTypes = {
   city: cityPropTypes,
   offers: hotelsPropTypes,
-  style: PropTypes.object
+  style: PropTypes.object,
+  activeOfferId: PropTypes.number,
 };
 
 export default Map;

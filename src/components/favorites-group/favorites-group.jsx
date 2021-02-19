@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {hotelsPropTypes} from '../../prop-types';
 
 import OfferCard from '../offer-card/offer-card';
-import {FAVORITES_OFFERS} from '../../constants';
+import {CardTypes} from '../../constants';
 
 const FavoritesGroup = ({group}) => {
   const {cityName, favoritesInCity} = group;
@@ -19,7 +19,7 @@ const FavoritesGroup = ({group}) => {
       </div>
       <div className="favorites__places">
         {favoritesInCity.map((offer) =>
-          <OfferCard offer={offer} cardType={FAVORITES_OFFERS} key={offer.id} />
+          <OfferCard offer={offer} cardType={CardTypes.FAVORITES_OFFERS} key={offer.id} />
         )}
       </div>
     </li>
