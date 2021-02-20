@@ -6,7 +6,6 @@ const initialState = {
   currentCityName: Cities.PARIS,
   sortOrder: SortOrders.POPULAR,
   offers: Offers,
-  offersAmountToShow: 5,
 };
 
 const reducer = (state = initialState, action) => {

@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 
-import {hotelsPropTypes, cityPropTypes} from '../../prop-types';
+import {hotelsPropTypes} from '../../prop-types';
 import PropTypes from 'prop-types';
 
 import leaflet from 'leaflet';
@@ -8,9 +8,10 @@ import 'leaflet/dist/leaflet.css';
 
 const Map = (props) => {
 
-  const {offers, city, style = {}, activeOfferId} = props;
+  const {offers, style = {}, activeOfferId} = props;
 
   const mapRef = useRef();
+  const city = offers[0].city;
 
   useEffect(() => {
 
@@ -48,7 +49,7 @@ const Map = (props) => {
     return () => {
       mapRef.current.remove();
     };
-  }, [city]);
+  }, []);
 
   useEffect(() => {
 
@@ -70,7 +71,6 @@ const Map = (props) => {
 };
 
 Map.propTypes = {
-  city: cityPropTypes,
   offers: hotelsPropTypes,
   style: PropTypes.object,
   activeOfferId: PropTypes.number,
