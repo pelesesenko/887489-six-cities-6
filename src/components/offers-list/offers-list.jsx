@@ -1,48 +1,21 @@
-import React, {useState} from 'react';
+import React from 'react';
 import OfferCard from '../offer-card/offer-card';
-import {MAIN_OFFERS} from '../../constants';
+import {CardTypes} from '../../constants';
 import {hotelsPropTypes} from '../../prop-types';
+import PropTypes from 'prop-types';
 
-const OffersList = ({items}) => {
-  const [activeItemId, setActiveItemId] = useState(null);
-
-  function handleMouseOver(evt) {
-    if (activeItemId) {
-      return;
-    }
-    let target = evt.target.closest(`[data-offer-id]`);
-    if (!target) {
-      return;
-    }
-    setActiveItemId(target.dataset.offerId);
-  }
-
-  function handleMouseOut(evt) {
-    if (!activeItemId) {
-      return;
-    }
-    let relatedTarget = evt.relatedTarget;
-    while (relatedTarget) {
-      if (relatedTarget.dataset
-        && relatedTarget.dataset.offerId === activeItemId) {
-        return;
-      }
-      relatedTarget = relatedTarget.parentNode;
-    }
-    setActiveItemId(null);
-  }
+const OffersList = ({items, onChangeActiveOffer}) => {
 
   return (
-    <div onMouseOver={handleMouseOver}
-      onMouseOut={handleMouseOut}
-      className="cities__places-list places__list tabs__content">
-      {items.map((item) => <OfferCard offer={item} cardType={MAIN_OFFERS} key = {item.id} />)}
+    <div className="cities__places-list places__list tabs__content">
+      {items.map((item) => <OfferCard offer={item} cardType={CardTypes.MAIN_OFFERS} key = {item.id} onChangeActiveOffer={onChangeActiveOffer}/>)}
     </div>
   );
 };
 
 OffersList.propTypes = {
-  items: hotelsPropTypes
+  items: hotelsPropTypes,
+  onChangeActiveOffer: PropTypes.func
 };
 
 export default OffersList;

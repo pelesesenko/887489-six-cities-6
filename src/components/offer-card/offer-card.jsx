@@ -4,24 +4,24 @@ import PropTypes from 'prop-types';
 
 import {prepareRating, upFirst} from '../../utilities/utilities';
 import {hotelPropTypes} from '../../prop-types';
-import {MAIN_OFFERS, FAVORITES_OFFERS, NEARBY_OFFERS} from '../../constants';
+import {CardTypes} from '../../constants';
 
-const OfferCard = ({offer, cardType}) => {
+const OfferCard = ({offer, cardType, onChangeActiveOffer = () => {}}) => {
 
   const cardSettings = {
-    [MAIN_OFFERS]: {
+    [CardTypes.MAIN_OFFERS]: {
       cardClass: `cities__place-card`,
       imgWrapClass: `cities__image-wrapper`,
       infoClass: ``,
       imgSizes: [260, 200],
     },
-    [FAVORITES_OFFERS]: {
+    [CardTypes.FAVORITES_OFFERS]: {
       cardClass: `favorites__card`,
       imgWrapClass: `favorites__image-wrapper`,
       infoClass: `favorites__card-info`,
       imgSizes: [150, 110],
     },
-    [NEARBY_OFFERS]: {
+    [CardTypes.NEARBY_OFFERS]: {
       cardClass: `near-places__card`,
       imgWrapClass: `near-places__image-wrapper`,
       infoClass: ``,
@@ -33,8 +33,11 @@ const OfferCard = ({offer, cardType}) => {
   const offerLink = `/offer/${id}`;
 
   return (
-    <article data-offer-id={id}
-      className={`place-card ${cardSettings[cardType].cardClass}`}>
+    <article
+      onMouseEnter={() => onChangeActiveOffer(id)}
+      onMouseLeave={() => onChangeActiveOffer(null)}
+      className={`place-card ${cardSettings[cardType].cardClass}`}
+    >
       {isPremium && <div className="place-card__mark">
         <span>Premium</span>
       </div>}
@@ -82,6 +85,7 @@ const OfferCard = ({offer, cardType}) => {
 OfferCard.propTypes = {
   offer: hotelPropTypes,
   cardType: PropTypes.string.isRequired,
+  onChangeActiveOffer: PropTypes.func
 };
 
 export default OfferCard;

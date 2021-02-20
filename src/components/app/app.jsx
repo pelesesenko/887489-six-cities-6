@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import {hotelsPropTypes, commentsPropTypes} from '../../prop-types';
 
 const App = (props) => {
-  const {offersAmountToShow, offers, reviews, favorites} = props;
+  const {offers, reviews, favorites} = props;
   return (
     <BrowserRouter>
       <Switch>
@@ -21,7 +21,7 @@ const App = (props) => {
           <PageRoom reviews={reviews} room={offers[1]} nearOffers={offers.slice(2, 5)}/>
         </Route>
         <Route path="/" exact>
-          <PageMain offersAmountToShow={offersAmountToShow} offers={offers}/>
+          <PageMain />
         </Route>
         <Route component={PageNotFound}/>
       </Switch>
