@@ -19,7 +19,7 @@ export const CitiesList = ({currentCityName, onSetCity}) => {
 };
 
 CitiesList.propTypes = {
-  currentCityName: PropTypes.string.isRequired,
+  currentCityName: PropTypes.oneOf(Object.values(Cities)),
   onSetCity: PropTypes.func
 };
 
