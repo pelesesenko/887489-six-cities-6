@@ -1,7 +1,7 @@
 // import Cities from '../../constants';
 
 export const ActionType = {
-  SET_CITY: `main/set-sity`,
+  SET_CITY: `MAIN/SET_CITY`,
 };
 
 export const ActionCreator = {
