@@ -21,3 +21,12 @@ export const SortOrders = {
   PRICE_DOWN: `Price: high to low`,
   RATING: `Top rated first`,
 };
+
+export const Grades = [`perfect`, `good`, `not bad`, `badly`, `terribly`];
+
+export const Paths = {
+  MAIN: `/`,
+  ROOM: `/offer/:id?`,
+  FAVORITES: `/favorites`,
+  LOGIN: `/login`,
+};

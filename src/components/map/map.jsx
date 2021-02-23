@@ -5,22 +5,23 @@ import PropTypes from 'prop-types';
 
 import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import {Cities} from '../../constants';
 
 const Map = (props) => {
 
-  const {offers, style = {}, activeOfferId} = props;
+  const {offers, style = {}, activeOfferId, cityName} = props;
 
   const mapRef = useRef();
   const city = offers[0].city;
 
   useEffect(() => {
 
-    const cityLocation = Object.values(city.location).slice(0, 2);
+    const cityLocation = Object.values(city.location);
 
     mapRef.current = leaflet.map(`map`, {
       center: cityLocation,
       zoom: city.location.zoom,
-      zoomControl: false,
+      zoomControl: true,
       marker: true
     });
 
@@ -32,9 +33,16 @@ const Map = (props) => {
 
     mapRef.current.setView(cityLocation, city.location.zoom);
 
+    return () => {
+      mapRef.current.remove();
+    };
+  }, [cityName]);
+
+  useEffect(() => {
+
     const icon = leaflet.icon({
       iconUrl: `./img/pin.svg`,
-      iconSize: [20, 30]
+      iconSize: [27, 39]
     });
 
     const markers = offers.map((offer) => (
@@ -47,9 +55,12 @@ const Map = (props) => {
     });
 
     return () => {
-      mapRef.current.remove();
+      markers.forEach((marker) => {
+        marker.remove();
+      });
     };
-  }, []);
+
+  }, [offers]);
 
   useEffect(() => {
 
@@ -72,6 +83,7 @@ const Map = (props) => {
 
 Map.propTypes = {
   offers: hotelsPropTypes,
+  cityName: PropTypes.oneOf(Object.values(Cities)),
   style: PropTypes.object,
   activeOfferId: PropTypes.number,
 };

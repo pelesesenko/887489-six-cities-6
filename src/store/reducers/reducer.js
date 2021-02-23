@@ -1,11 +1,14 @@
 import {ActionType} from '../actions';
 import {Offers} from '../../mocks/offers';
+import {Favorites} from '../../mocks/favorites';
 import {Cities, SortOrders} from '../../constants';
 
 const initialState = {
   currentCityName: Cities.PARIS,
   sortOrder: SortOrders.POPULAR,
   offers: Offers,
+  isAuthorized: true,
+  favorites: Favorites
 };
 
 const reducer = (state = initialState, action) => {
