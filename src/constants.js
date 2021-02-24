@@ -24,9 +24,22 @@ export const SortOrders = {
 
 export const Grades = [`perfect`, `good`, `not bad`, `badly`, `terribly`];
 
-export const Paths = {
+export const AppPaths = {
   MAIN: `/`,
   ROOM: `/offer/:id?`,
   FAVORITES: `/favorites`,
   LOGIN: `/login`,
+};
+
+export const APIRoutes = {
+  OFFERS: `/hotels`,
+  FAVORITES: `/favorite`,
+  COMMENTS: `/comments`,
+  LOGIN: `/login`,
+  LOGOUT: `/logout`,
+};
+
+export const AuthorizationStatus = {
+  AUTH: `AUTH`,
+  NO_AUTH: `NO_AUTH`
 };

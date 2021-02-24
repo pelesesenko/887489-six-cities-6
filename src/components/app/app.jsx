@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
-import {Paths} from '../../constants';
+import {AppPaths} from '../../constants';
 import PageMain from '../page-main/page-main';
 import PageSignIn from '../page-sign-in/page-sign-in';
 import PageFavorites from '../page-favorites/page-favorites';
@@ -15,17 +15,17 @@ const App = (props) => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path={Paths.LOGIN} exact render={() => (
-          !isAuthorized ? <PageSignIn/> : <Redirect to={Paths.MAIN}/>
+        <Route path={AppPaths.LOGIN} exact render={() => (
+          !isAuthorized ? <PageSignIn/> : <Redirect to={AppPaths.MAIN}/>
         )}/>
-        <Route path={Paths.FAVORITES}
+        <Route path={AppPaths.FAVORITES}
           exact render={() => (
-            isAuthorized ? <PageFavorites/> : <Redirect to={Paths.LOGIN}/>
+            isAuthorized ? <PageFavorites/> : <Redirect to={AppPaths.LOGIN}/>
           )}/>
-        <Route path={Paths.ROOM} exact>
+        <Route path={AppPaths.ROOM} exact>
           <PageRoom reviews={reviews} room={offers[1]} nearOffers={offers.slice(2, 5)}/>
         </Route>
-        <Route path={Paths.MAIN} exact render={() => (<PageMain />)}/>
+        <Route path={AppPaths.MAIN} exact render={() => (<PageMain />)}/>
         <Route component={PageNotFound}/>
       </Switch>
     </BrowserRouter>
@@ -41,6 +41,7 @@ App.propTypes = {
 
 const mapStateToProps = (state) => ({
   isAuthorized: state.isAuthorized,
+  offers: state.offers.entities
 });
 
 export {App};
