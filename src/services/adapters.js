@@ -4,11 +4,9 @@ export const offerAdapter = (offer) => {
     is_premium: isPremium,
     max_adults: maxAdults,
     preview_image: previewImage,
-    host,
+    host: {is_pro: isPro, ...restHost},
     ...restOffer
   } = offer;
-
-  const {is_pro: isPro, ...restHost} = host;
 
   return {
     isFavorite,

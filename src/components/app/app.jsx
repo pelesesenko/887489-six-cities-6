@@ -10,8 +10,11 @@ import PageNotFound from '../page-not-found/page-not-found';
 import PropTypes from 'prop-types';
 import {hotelsPropTypes, commentsPropTypes} from '../../prop-types';
 
+import {Offers as offersMock} from '../../mocks/offers';
+
 const App = (props) => {
-  const {offers, reviews, isAuthorized} = props;
+  const {reviews, isAuthorized} = props;
+
   return (
     <BrowserRouter>
       <Switch>
@@ -23,7 +26,7 @@ const App = (props) => {
             isAuthorized ? <PageFavorites/> : <Redirect to={AppPaths.LOGIN}/>
           )}/>
         <Route path={AppPaths.ROOM} exact>
-          <PageRoom reviews={reviews} room={offers[1]} nearOffers={offers.slice(2, 5)}/>
+          <PageRoom reviews={reviews} room={offersMock[1]} nearOffers={offersMock.slice(2, 5)}/>
         </Route>
         <Route path={AppPaths.MAIN} exact render={() => (<PageMain />)}/>
         <Route component={PageNotFound}/>
