@@ -1,5 +1,10 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import {useParams} from 'react-router-dom';
+import axios from 'axios';
+import {ErrorStatus, AppPaths} from '../../constants';
+import {createApi} from '../../services/api';
 
+import {offerAdapter} from '../../services/adapters';
 import {hotelPropTypes, hotelsPropTypes, commentsPropTypes} from '../../prop-types';
 
 import Header from '../header/header';
@@ -13,8 +18,17 @@ import NearbyList from '../nearby-list/nearby-list';
 import {prepareRating, upFirst} from '../../utilities/utilities';
 
 
-const PageRoom = ({room, reviews, nearOffers}) => {
+const PageRoom = ({reviews, nearOffers}) => {
 
+  const [room, setRoom] = useState({})
+  const id = useParams().id;
+  const roomApi = createApi(
+    () => {history.push(AppPaths.MAIN)},
+    ErrorStatus.NOT_FOUND
+  );
+
+
+console.log(id)
   const {
     isPremium,
     price,

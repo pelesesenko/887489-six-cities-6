@@ -11,11 +11,11 @@ import {Reviews} from './mocks/reviews';
 import {Favorites} from './mocks/favorites';
 import {ActionCreator} from './store/actions';
 import {checkAuth} from './store/api-actions';
-import {AuthorizationStatus} from './constants';
+import {AuthorizationStatus, ErrorStatus} from './constants';
 
 const api = createApi(() => {
   store.dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.NO_AUTH));
-});
+}, ErrorStatus.UNAUTHORIZED);
 
 const store = createStore(reducer, composeWithDevTools(
     applyMiddleware(thunk.withExtraArgument(api))
