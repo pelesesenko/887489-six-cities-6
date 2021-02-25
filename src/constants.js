@@ -43,3 +43,8 @@ export const AuthorizationStatus = {
   AUTH: `AUTH`,
   NO_AUTH: `NO_AUTH`
 };
+
+export const ErrorStatus = {
+  UNAUTHORIZED: 401,
+  NOT_FOUND: 404,
+};
