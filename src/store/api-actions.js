@@ -10,11 +10,29 @@ export const fetchOffers = () => (dispatch, _getState, api) => (
 
 export const checkAuth = () => (dispatch, _getState, api) => (
   api.get(APIRoutes.LOGIN)
+  .then(({data}) => dispatch(ActionCreator.setCurrntUser({
+    id: data.id,
+    email: data.email,
+    name: data.name,
+  })))
   .then(() => dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH)))
   .catch(() =>{})
 );
 
 export const login = ({login: email, password}) => (dispatch, _getState, api) => (
   api.post(APIRoutes.LOGIN, {email, password})
+  .then(({data}) => dispatch(ActionCreator.setCurrntUser({
+    id: data.id,
+    email: data.email,
+    name: data.name,
+  })))
   .then(() => dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH)))
+  .catch(() =>{})
+);
+
+export const logout = () => (dispatch, _getState, api) => (
+  api.get(APIRoutes.LOGOUT)
+  .then(() => dispatch(ActionCreator.setCurrntUser({})))
+  .then(() => dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.NO_AUTH)))
+
 );

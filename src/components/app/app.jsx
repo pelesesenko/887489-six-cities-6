@@ -1,7 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
-import {AppPaths} from '../../constants';
+import {AppPaths, AuthorizationStatus} from '../../constants';
+import PrivateRoute from '../private-route/private-route';
 import PageMain from '../page-main/page-main';
 import PageSignIn from '../page-sign-in/page-sign-in';
 import PageFavorites from '../page-favorites/page-favorites';
@@ -21,10 +22,10 @@ const App = (props) => {
         <Route path={AppPaths.LOGIN} exact render={() => (
           !isAuthorized ? <PageSignIn/> : <Redirect to={AppPaths.MAIN}/>
         )}/>
-        <Route path={AppPaths.FAVORITES}
-          exact render={() => (
-            isAuthorized ? <PageFavorites/> : <Redirect to={AppPaths.LOGIN}/>
-          )}/>
+        <PrivateRoute exact
+          path={AppPaths.FAVORITES}
+          render={() => <PageFavorites/>}
+        />
         <Route path={AppPaths.ROOM} exact>
           <PageRoom reviews={reviews} room={offersMock[1]} nearOffers={offersMock.slice(2, 5)}/>
         </Route>
@@ -36,14 +37,13 @@ const App = (props) => {
 };
 
 App.propTypes = {
-  offersAmountToShow: PropTypes.number.isRequired,
   offers: hotelsPropTypes,
   reviews: commentsPropTypes,
   isAuthorized: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  isAuthorized: state.isAuthorized,
+  isAuthorized: state.authorizationStatus === AuthorizationStatus.AUTH,
   offers: state.offers.entities
 });
 
