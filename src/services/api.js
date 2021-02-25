@@ -3,10 +3,6 @@ import axios from 'axios';
 const BACKEND_URL = `https://6.react.pages.academy/six-cities`;
 const TIMEOUT = 5000;
 
-const HttpStatus = {
-  UNAUTHORIZED: 401,
-};
-
 export const createApi = (onError, errorStatus) => {
 
   const api = axios.create({
