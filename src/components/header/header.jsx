@@ -1,8 +1,11 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
+import {logout} from '../../store/api-actions';
+import {AuthorizationStatus} from '../../constants';
 
-const Header = ({mainFlag}) => (
+const Header = ({mainFlag, isAuthorized, onLogout, user}) => (
   <header className="header">
     <div className="container">
       <div className="header__wrapper">
@@ -21,8 +24,11 @@ const Header = ({mainFlag}) => (
               <Link className="header__nav-link header__nav-link--profile" to="/favorites">
                 <div className="header__avatar-wrapper user__avatar-wrapper">
                 </div>
-                <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
+                <span className="header__user-name user__name">{isAuthorized ? user.email : `Sign In`}</span>
               </Link>
+            </li>
+            <li className="header__nav-item user">
+              <button onClick={onLogout} style={{marginLeft: `20px`}}>Logout</button>
             </li>
           </ul>
         </nav>
@@ -33,6 +39,21 @@ const Header = ({mainFlag}) => (
 
 Header.propTypes = {
   mainFlag: PropTypes.bool,
+  isAuthorized: PropTypes.bool.isRequired,
+  onLogout: PropTypes.func.isRequired,
+  user: PropTypes.object,
 };
 
-export default Header;
+const mapStateToProps = (state) => ({
+  isAuthorized: state.authorizationStatus === AuthorizationStatus.AUTH,
+  user: state.currentUser,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onLogout() {
+    dispatch(logout());
+  },
+});
+
+export {Header};
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

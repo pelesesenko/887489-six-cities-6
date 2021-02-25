@@ -5,6 +5,7 @@ export const ActionType = {
   SET_SORT_ORDER: `MAIN/SET_SORT_ORDER`,
   LOAD_OFFERS: `DATA/LOAD_OFFERS`,
   REQUIRED_AUTHORIZATION: `USER/REQUIRED_AUTHORIZATION`,
+  SET_CURRENT_USER: `USER/SET_CURRENT_USER`,
 };
 
 export const ActionCreator = {
@@ -26,6 +27,11 @@ export const ActionCreator = {
   requireAuthorization: (status) => ({
     type: ActionType.REQUIRED_AUTHORIZATION,
     payload: status
+  }),
+
+  setCurrntUser: (user) => ({
+    type: ActionType.SET_CURRENT_USER,
+    payload: user,
   }),
 };
 
