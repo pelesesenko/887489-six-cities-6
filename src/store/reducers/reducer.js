@@ -1,31 +1,15 @@
-import {ActionType} from '../actions';
-import {Offers} from '../../mocks/offers';
-import {Cities, SortOrders} from '../../constants';
+import {combineReducers} from 'redux';
 
-const initialState = {
-  currentCityName: Cities.PARIS,
-  sortOrder: SortOrders.POPULAR,
-  offers: Offers,
-};
+import {offers} from './offers';
+import {authorizationStatus} from './auth-status';
+import {sortOrder} from './sort-order';
+import {currentCityName} from './current-city';
+import {favorites} from './favorites';
 
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-
-    case ActionType.SET_CITY:
-      return {
-        ...state,
-        currentCityName: action.payload
-      };
-
-    case ActionType.SET_SORT_ORDER:
-      return {
-        ...state,
-        sortOrder: action.payload
-      };
-
-
-    default: return state;
-  }
-};
-
-export {reducer};
+export const reducer = combineReducers({
+  currentCityName,
+  sortOrder,
+  offers,
+  authorizationStatus,
+  favorites,
+});

@@ -1,10 +1,14 @@
 import React from 'react';
+// import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 
 import {hotelsPropTypes} from '../../prop-types';
 import Header from '../header/header';
 import FavoritesList from '../favorites-list/favorites-list';
 
 const PageFavorites = ({favorites}) => {
+
+  // if (!isAuthorized) {history.push(`/login`);}
 
   const prepFavorites = [];
   let swap = null;
@@ -17,14 +21,25 @@ const PageFavorites = ({favorites}) => {
   }
 
   return (
-    <div className="page">
+    <div className={`page${!favorites.length ? ` page--favorites-empty` : ``}`}>
       <Header/>
-      <main className="page__main page__main--favorites">
+      <main className={`page__main page__main--favorites${!favorites.length ? ` page__main--favorites-empty` : ``}`}>
         <div className="page__favorites-container container">
-          <section className="favorites">
-            <h1 className="favorites__title">Saved listing</h1>
-            <FavoritesList prepFavorites={prepFavorites} />
-          </section>
+          {favorites.length
+            ?
+            <section className="favorites">
+              <h1 className="favorites__title">Saved listing</h1>
+              <FavoritesList prepFavorites={prepFavorites} />
+            </section>
+            :
+            <section className="favorites favorites--empty">
+              <h1 className="visually-hidden">Favorites (empty)</h1>
+              <div className="favorites__status-wrapper">
+                <b className="favorites__status">Nothing yet saved.</b>
+                <p className="favorites__status-description">Save properties to narrow down search or plan your future trips.</p>
+              </div>
+            </section>
+          }
         </div>
       </main>
       <footer className="footer container">
@@ -38,6 +53,12 @@ const PageFavorites = ({favorites}) => {
 
 PageFavorites.propTypes = {
   favorites: hotelsPropTypes,
+  // history: PropTypes.object.isRequired,
 };
 
-export default PageFavorites;
+const mapStateToProps = (state) => ({
+  favorites: state.favorites,
+});
+
+export {PageFavorites};
+export default connect(mapStateToProps, null)(PageFavorites);

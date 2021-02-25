@@ -1,5 +1,7 @@
 import React from 'react';
-import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
+import {AppPaths} from '../../constants';
 import PageMain from '../page-main/page-main';
 import PageSignIn from '../page-sign-in/page-sign-in';
 import PageFavorites from '../page-favorites/page-favorites';
@@ -8,21 +10,25 @@ import PageNotFound from '../page-not-found/page-not-found';
 import PropTypes from 'prop-types';
 import {hotelsPropTypes, commentsPropTypes} from '../../prop-types';
 
+import {Offers as offersMock} from '../../mocks/offers';
+
 const App = (props) => {
-  const {offers, reviews, favorites} = props;
+  const {reviews, isAuthorized} = props;
+
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/login" exact component={PageSignIn}/>
-        <Route path="/favorites" exact>
-          <PageFavorites favorites={favorites}/>
+        <Route path={AppPaths.LOGIN} exact render={() => (
+          !isAuthorized ? <PageSignIn/> : <Redirect to={AppPaths.MAIN}/>
+        )}/>
+        <Route path={AppPaths.FAVORITES}
+          exact render={() => (
+            isAuthorized ? <PageFavorites/> : <Redirect to={AppPaths.LOGIN}/>
+          )}/>
+        <Route path={AppPaths.ROOM} exact>
+          <PageRoom reviews={reviews} room={offersMock[1]} nearOffers={offersMock.slice(2, 5)}/>
         </Route>
-        <Route path="/offer/:id?" exact>
-          <PageRoom reviews={reviews} room={offers[1]} nearOffers={offers.slice(2, 5)}/>
-        </Route>
-        <Route path="/" exact>
-          <PageMain />
-        </Route>
+        <Route path={AppPaths.MAIN} exact render={() => (<PageMain />)}/>
         <Route component={PageNotFound}/>
       </Switch>
     </BrowserRouter>
@@ -32,8 +38,15 @@ const App = (props) => {
 App.propTypes = {
   offersAmountToShow: PropTypes.number.isRequired,
   offers: hotelsPropTypes,
-  favorites: hotelsPropTypes,
-  reviews: commentsPropTypes
+  reviews: commentsPropTypes,
+  isAuthorized: PropTypes.bool.isRequired,
 };
 
-export default App;
+const mapStateToProps = (state) => ({
+  isAuthorized: state.isAuthorized,
+  offers: state.offers.entities
+});
+
+export {App};
+export default connect(mapStateToProps, null)(App);
+
