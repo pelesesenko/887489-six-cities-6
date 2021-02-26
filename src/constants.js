@@ -29,12 +29,14 @@ export const AppPaths = {
   ROOM: `/offer/:id?`,
   FAVORITES: `/favorites`,
   LOGIN: `/login`,
+  NOT_FOUND: `/not-found`,
 };
 
 export const APIRoutes = {
-  OFFERS: `/hotels`,
+  OFFERS: `/hotels/`,
   FAVORITES: `/favorite`,
-  COMMENTS: `/comments`,
+  COMMENTS: `/comments/`,
+  NEARBY: `/nearby`,
   LOGIN: `/login`,
   LOGOUT: `/logout`,
 };
@@ -43,3 +45,15 @@ export const AuthorizationStatus = {
   AUTH: `AUTH`,
   NO_AUTH: `NO_AUTH`
 };
+
+export const ErrorStatus = {
+  UNAUTHORIZED: 401,
+  NOT_FOUND: 404,
+};
+
+export const ReviewLength = {
+  MAX: 300,
+  MIN: 50,
+};
+
+

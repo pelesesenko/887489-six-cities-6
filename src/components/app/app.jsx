@@ -30,6 +30,7 @@ const App = (props) => {
           <PageRoom reviews={reviews} room={offersMock[1]} nearOffers={offersMock.slice(2, 5)}/>
         </Route>
         <Route path={AppPaths.MAIN} exact render={() => (<PageMain />)}/>
+        <Route path={AppPaths.NOT_FOUND} exact component={PageNotFound}/>
         <Route component={PageNotFound}/>
       </Switch>
     </BrowserRouter>

@@ -60,9 +60,6 @@ PageSignIn.propTypes = {
   onLogin: PropTypes.func.isRequired,
 };
 
-// const mapStateToProps = (state) => ({
-//   isAuthorized: state.authorizationStatus === AuthorizationStatus.AUTH,
-// });
 
 const mapDispatchToProps = (dispatch) => ({
   onLogin(authData) {
