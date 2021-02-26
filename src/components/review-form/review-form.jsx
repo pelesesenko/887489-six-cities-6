@@ -1,4 +1,4 @@
-import React, {useState, Fragment} from 'react';
+import React, {useState, Fragment, useRef} from 'react';
 import PropTypes from 'prop-types';
 
 import {createApi} from '../../services/api';
@@ -6,7 +6,7 @@ import {reviewsAdapter} from '../../services/adapters';
 import {Grades, ReviewLength, APIRoutes} from '../../constants';
 
 const ReviewForm = ({roomId, onSentReview}) => {
-
+  const formRef = useRef(null)
   const initialState = {comment: ``, rating: 0};
 
   const [reviewForm, setReviewForm] = useState(initialState);
@@ -26,10 +26,13 @@ const ReviewForm = ({roomId, onSentReview}) => {
   const handleSubmit = (evt) => {
     evt.preventDefault();
 
-    reviewFormApi.post(APIRoutes.COMMENTS + roomId)
+    reviewFormApi.post(APIRoutes.COMMENTS + roomId, reviewForm)
     .then(({data}) => reviewsAdapter(data))
     .then((data) => onSentReview(data))
-    .then(() => setReviewForm(initialState))
+    .then(() => {
+      setReviewForm({...initialState});
+      [...formRef.current.rating].forEach((el)=>{el.checked = false});
+    })
     .catch(() => handleSendError());
   };
 
@@ -41,12 +44,13 @@ const ReviewForm = ({roomId, onSentReview}) => {
   return (
     <>
       {sendingFailed && <b>Something went wrong... Please, try again</b>}
-      <form onSubmit={handleSubmit} className="reviews__form form" action="#" method="post">
+      <form onSubmit={handleSubmit} ref={formRef} className="reviews__form form" action="#" method="post">
         <label className="reviews__label form__label" htmlFor="review">Your review</label>
         <div className="reviews__rating-form form__rating">
           {Grades.map((grade, i) => (
             <Fragment key={grade}>
-              <input onChange={handleFieldChange} className="form__rating-input visually-hidden" name="rating" defaultValue={Grades.length - i} id={`${Grades.length - i}-stars`} type="radio"/>
+              <input onChange={handleFieldChange} className="form__rating-input visually-hidden" name="rating"
+                defaultValue={Grades.length - i} id={`${Grades.length - i}-stars`} type="radio"/>
               <label htmlFor={`${Grades.length - i}-stars`} className="reviews__rating-label form__rating-label" title={grade}>
                 <svg className="form__star-image" width={37} height={33}>
                   <use xlinkHref="#icon-star" />
@@ -55,7 +59,7 @@ const ReviewForm = ({roomId, onSentReview}) => {
             </Fragment>
           ))}
         </div>
-        <textarea onChange={handleFieldChange} className="reviews__textarea form__textarea" id="review" name="comment" placeholder="Tell how was your stay, what you like and what can be improved" defaultValue={``} />
+        <textarea onChange={handleFieldChange} className="reviews__textarea form__textarea" id="review" name="comment" placeholder="Tell how was your stay, what you like and what can be improved" value={reviewForm.comment}/>
         <div className="reviews__button-wrapper">
           <p className="reviews__help">
             To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
@@ -68,7 +72,7 @@ const ReviewForm = ({roomId, onSentReview}) => {
 };
 
 ReviewForm.propTypes = {
-  roomId: PropTypes.number.isRequired,
+  roomId: PropTypes.string.isRequired,
   onSentReview: PropTypes.func.isRequired,
 };
 

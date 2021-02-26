@@ -159,10 +159,8 @@ const PageRoom = ({isAuthorized}) => {
                 <div className="property__host">
                   <h2 className="property__host-title">Meet the host</h2>
                   <div className="property__host-user user">
-                    <div className={
-                      `property__avatar-wrapper
-                      user__avatar-wrapper
-                      ${host.isPro && `property__avatar-wrapper--pro`}`
+                    <div className={`property__avatar-wrapper user__avatar-wrapper
+                      ${host.isPro ? `property__avatar-wrapper--pro` : ``}`
                     }>
                       <img className="property__avatar user__avatar" src={host.avatarUrl} width={74} height={74} alt="Host avatar" />
                     </div>
