@@ -5,6 +5,7 @@ import {useParams, useHistory} from 'react-router-dom';
 import {ErrorStatus, AppPaths, APIRoutes} from '../../constants';
 import {createApi} from '../../services/api';
 import {offerAdapter, offersAdapter, reviewsAdapter} from '../../services/adapters';
+import {ActionCreator} from '../../store/actions';
 
 
 import Header from '../header/header';
@@ -19,7 +20,7 @@ import NearbyList from '../nearby-list/nearby-list';
 import {prepareRating, upFirst} from '../../utilities/utilities';
 
 
-const PageRoom = ({isAuthorized}) => {
+const PageRoom = ({isAuthorized, onOffersUpdate}) => {
 
   const id = useParams().id;
   const history = useHistory();
@@ -40,6 +41,7 @@ const PageRoom = ({isAuthorized}) => {
   useEffect(() => {
     roomApi.get(APIRoutes.OFFERS + id)
     .then(({data}) => offerAdapter(data))
+    .then((data) => onOffersUpdate(data))
     .then((data) => setRoom(data))
 
     roomDataApi.get(APIRoutes.COMMENTS + id)
@@ -49,6 +51,7 @@ const PageRoom = ({isAuthorized}) => {
 
     roomDataApi.get(APIRoutes.OFFERS + id + APIRoutes.NEARBY)
     .then(({data}) => offersAdapter(data))
+    .then((data) => onOffersUpdate(data))
     .then((data) => setNearOffers(data))
     .catch(() => {});
   }, [id]);
@@ -169,13 +172,17 @@ const PageRoom = ({isAuthorized}) => {
 
 PageRoom.propTypes = {
   isAuthorized: PropTypes.bool.isRequired,
+  onOffersUpdate: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-
+const mapDispatchToProps = (dispatch) => ({
+  onOffersUpdate (offers) {
+    dispatch(ActionCreator.updateOffers(offers));
+    return offers
+  }
 });
 
 export {PageRoom};
-export default connect(mapStateToProps)(PageRoom);
+export default connect(null, mapDispatchToProps)(PageRoom);
 
 

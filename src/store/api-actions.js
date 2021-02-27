@@ -6,7 +6,6 @@ export const fetchOffers = () => (dispatch, _getState, api) => (
   api.get(APIRoutes.OFFERS)
   .then(({data}) => offersAdapter(data))
   .then((data) => dispatch(ActionCreator.loadOffers(data)))
-  .then(() => console.log(`load offers`))
 );
 
 export const checkAuth = () => (dispatch, _getState, api) => (

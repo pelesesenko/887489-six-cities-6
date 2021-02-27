@@ -35,9 +35,9 @@ export const ActionCreator = {
     payload: user,
   }),
 
-  updateOffers: (favorites) => ({
+  updateOffers: (offers) => ({
     type: ActionType.UPDATE_OFFERS,
-    payload: favorites,
+    payload: offers,
   }),
 };
 
