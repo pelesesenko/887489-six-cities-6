@@ -1,12 +1,14 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
 import {prepareRating, upFirst} from '../../utilities/utilities';
 import {hotelPropTypes} from '../../prop-types';
 import {CardTypes} from '../../constants';
+import {resetFavoriteStatus} from '../../store/api-actions';
 
-const OfferCard = ({offer, cardType, onChangeActiveOffer = () => {}}) => {
+const OfferCard = ({id, offer, cardType, onChangeActiveOffer = () => {}, onResetFavoriteStatus}) => {
 
   const cardSettings = {
     [CardTypes.MAIN_OFFERS]: {
@@ -29,8 +31,13 @@ const OfferCard = ({offer, cardType, onChangeActiveOffer = () => {}}) => {
     }
   };
 
-  const {isPremium, previewImage, price, title, isFavorite, rating, type, id} = offer;
+  const {isPremium, previewImage, price, title, isFavorite, rating, type} = offer;
   const offerLink = `/offer/${id}`;
+
+  const handleFavButtonClick = () => {
+    const status = isFavorite ? 0 : 1;
+    onResetFavoriteStatus(id, status);
+  };
 
   return (
     <article
@@ -56,7 +63,7 @@ const OfferCard = ({offer, cardType, onChangeActiveOffer = () => {}}) => {
             <b className="place-card__price-value">€{price}</b>
             <span className="place-card__price-text"> /&nbsp;night</span>
           </div>
-          <button
+          <button onClick={handleFavButtonClick}
             className={`place-card__bookmark-button button ${isFavorite && `place-card__bookmark-button--active`}`}
             type="button">
             <svg className="place-card__bookmark-icon" width={18} height={19}>
@@ -85,7 +92,20 @@ const OfferCard = ({offer, cardType, onChangeActiveOffer = () => {}}) => {
 OfferCard.propTypes = {
   offer: hotelPropTypes,
   cardType: PropTypes.string.isRequired,
-  onChangeActiveOffer: PropTypes.func
+  onChangeActiveOffer: PropTypes.func,
+  onResetFavoriteStatus: PropTypes.func.isRequired,
 };
 
-export default OfferCard;
+const mapStateToProps = (state, props) => ({
+  offer: state.offers.entities.find((offer) => offer.id === props.id),
+
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onResetFavoriteStatus(id, status) {
+    dispatch(resetFavoriteStatus(id, status));
+  },
+});
+
+export {OfferCard};
+export default connect(mapStateToProps, mapDispatchToProps)(OfferCard);

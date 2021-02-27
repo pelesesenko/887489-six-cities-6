@@ -19,7 +19,7 @@ const FavoritesGroup = ({group}) => {
       </div>
       <div className="favorites__places">
         {favoritesInCity.map((offer) =>
-          <OfferCard offer={offer} cardType={CardTypes.FAVORITES_OFFERS} key={offer.id} />
+          <OfferCard id={offer.id} cardType={CardTypes.FAVORITES_OFFERS} key={offer.id} />
         )}
       </div>
     </li>

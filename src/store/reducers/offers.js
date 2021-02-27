@@ -19,10 +19,12 @@ export const offers = (state = initialState, action) => {
       let newState = {...state};
       if (action.payload instanceof Array) {
         action.payload.forEach((newRoom) => {
-          newState.entities = state.entities.map((oldRoom) => newRoom.id === oldRoom.id ? newRoom : {...oldRoom});
-        })
+          newState.entities = state.entities.map(
+            (oldRoom) => newRoom.id === oldRoom.id ? newRoom : {...oldRoom});
+        });
       } else {
-        newState.entities = state.entities.map((oldRoom) => action.payload.id === oldRoom.id ? action.payload : {...oldRoom})
+        newState.entities = state.entities.map(
+          (oldRoom) => action.payload.id === oldRoom.id ? action.payload : {...oldRoom});
       }
       return newState;
 

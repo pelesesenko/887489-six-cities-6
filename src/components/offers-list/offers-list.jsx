@@ -8,7 +8,7 @@ const OffersList = ({items, onChangeActiveOffer}) => {
 
   return (
     <div className="cities__places-list places__list tabs__content">
-      {items.map((item) => <OfferCard offer={item} cardType={CardTypes.MAIN_OFFERS} key = {item.id} onChangeActiveOffer={onChangeActiveOffer}/>)}
+      {items.map((item) => <OfferCard id={item.id} cardType={CardTypes.MAIN_OFFERS} key = {item.id} onChangeActiveOffer={onChangeActiveOffer}/>)}
     </div>
   );
 };

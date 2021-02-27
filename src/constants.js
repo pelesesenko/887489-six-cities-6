@@ -34,7 +34,7 @@ export const AppPaths = {
 
 export const APIRoutes = {
   OFFERS: `/hotels/`,
-  FAVORITES: `/favorite`,
+  FAVORITES: `/favorite/`,
   COMMENTS: `/comments/`,
   NEARBY: `/nearby`,
   LOGIN: `/login`,
