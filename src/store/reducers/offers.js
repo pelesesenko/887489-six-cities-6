@@ -14,6 +14,18 @@ export const offers = (state = initialState, action) => {
         isLoaded: true,
         entities: action.payload,
       };
+
+    case ActionType.UPDATE_OFFERS:
+      let newState;
+      if (action.payload instanceof Array) {
+        action.payload.forEach((newRoom) => {
+          newState = state.entities.map((oldRoom) => newRoom.id === oldRoom.id ? newRoom : {...oldRoom});
+        })
+      } else {
+        newState = state.entities.map((oldRoom) => action.payload.id === oldRoom.id ? action.payload : {...oldRoom})
+      }
+      return newState;
+
     default: return state;
   }
 };

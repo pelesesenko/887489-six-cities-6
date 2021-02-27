@@ -6,11 +6,12 @@ export const fetchOffers = () => (dispatch, _getState, api) => (
   api.get(APIRoutes.OFFERS)
   .then(({data}) => offersAdapter(data))
   .then((data) => dispatch(ActionCreator.loadOffers(data)))
+  .then(() => console.log(`load offers`))
 );
 
 export const checkAuth = () => (dispatch, _getState, api) => (
   api.get(APIRoutes.LOGIN)
-  .then(({data}) => dispatch(ActionCreator.setCurrntUser({
+  .then(({data}) => dispatch(ActionCreator.setCurrentUser({
     id: data.id,
     email: data.email,
     name: data.name,
@@ -21,7 +22,7 @@ export const checkAuth = () => (dispatch, _getState, api) => (
 
 export const login = ({login: email, password}) => (dispatch, _getState, api) => (
   api.post(APIRoutes.LOGIN, {email, password})
-  .then(({data}) => dispatch(ActionCreator.setCurrntUser({
+  .then(({data}) => dispatch(ActionCreator.setCurrentUser({
     id: data.id,
     email: data.email,
     name: data.name,
@@ -32,7 +33,7 @@ export const login = ({login: email, password}) => (dispatch, _getState, api) =>
 
 export const logout = () => (dispatch, _getState, api) => (
   api.get(APIRoutes.LOGOUT)
-  .then(() => dispatch(ActionCreator.setCurrntUser({})))
+  .then(() => dispatch(ActionCreator.setCurrentUser({})))
   .then(() => dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.NO_AUTH)))
 
 );

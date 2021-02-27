@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Header from '../header/header';
-import {login} from '../../store/api-actions';
+import {login, fetchOffers} from '../../store/api-actions';
 
 const PageSignIn = ({onLogin}) => {
 
@@ -64,6 +64,7 @@ PageSignIn.propTypes = {
 const mapDispatchToProps = (dispatch) => ({
   onLogin(authData) {
     dispatch(login(authData));
+    dispatch(fetchOffers())
   },
 });
 

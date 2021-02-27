@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import {logout} from '../../store/api-actions';
+import {logout, fetchOffers} from '../../store/api-actions';
 import {AuthorizationStatus} from '../../constants';
 
 const Header = ({mainFlag, isAuthorized, onLogout, user}) => (
@@ -52,6 +52,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   onLogout() {
     dispatch(logout());
+    dispatch(fetchOffers());
   },
 });
 
