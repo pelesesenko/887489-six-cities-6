@@ -29,16 +29,16 @@ const PageFavorites = ({onOffersUpd}) => {
 
   return (
     <div className={`page
-    ${favorites !== null && !favorites.length ? ` page--favorites-empty` : ``}`}>
+    ${favorites !== null && !favorites.length ? ` page--favorites-empty` : ``}`} >
       <Header/>
       {favorites === null
         ? <Loading />
 
         : (<main className={`page__main page__main--favorites${!favorites.length ? ` page__main--favorites-empty` : ``}`}>
-          <div className="page__favorites-container container">
+          <div className="page__favorites-container container" >
             {favorites.length
               ?
-              <section className="favorites">
+              <section className="favorites" style={{minHeight: `75vh`}}>
                 <h1 className="favorites__title">Saved listing</h1>
                 <FavoritesList favorites={favorites} />
               </section>

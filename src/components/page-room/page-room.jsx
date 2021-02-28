@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {useParams, useHistory} from 'react-router-dom';
+import {hotelPropTypes} from '../../prop-types';
+import {useHistory} from 'react-router-dom';
 import {ErrorStatus, AppPaths, APIRoutes} from '../../constants';
 import {createApi} from '../../services/api';
 import {offerAdapter, offersAdapter, reviewsAdapter} from '../../services/adapters';
 import {ActionCreator} from '../../store/actions';
+import {resetFavoriteStatus} from '../../store/api-actions';
 
 
 import Header from '../header/header';
@@ -20,12 +22,11 @@ import NearbyList from '../nearby-list/nearby-list';
 import {prepareRating, upFirst} from '../../utilities/utilities';
 
 
-const PageRoom = ({isAuthorized, onOffersUpdate}) => {
+const PageRoom = ({id, isAuthorized, onOffersUpdate, room, onResetFavoriteStatus}) => {
 
-  const id = +useParams().id;
   const history = useHistory();
 
-  const [room, setRoom] = useState(null);
+  const [isRoomUpdated, setRoomUpdated] = useState(false);
   const [reviews, setReviews] = useState(null);
   const [nearOffers, setNearOffers] = useState(null);
 
@@ -42,7 +43,7 @@ const PageRoom = ({isAuthorized, onOffersUpdate}) => {
     roomApi.get(APIRoutes.OFFERS + id)
     .then(({data}) => offerAdapter(data))
     .then((data) => onOffersUpdate(data))
-    .then((data) => setRoom(data));
+    .then(() => setRoomUpdated(true));
 
     roomDataApi.get(APIRoutes.COMMENTS + id)
     .then(({data}) => reviewsAdapter(data))
@@ -60,6 +61,11 @@ const PageRoom = ({isAuthorized, onOffersUpdate}) => {
     setReviews(newReviews);
   };
 
+  const handleFavButtonClick = () => {
+    const status = room.isFavorite ? 0 : 1;
+    onResetFavoriteStatus(id, status);
+  };
+
   const mapStyle = {
     height: `579px`,
     width: `1144px`,
@@ -69,7 +75,7 @@ const PageRoom = ({isAuthorized, onOffersUpdate}) => {
   return (
     <div className="page">
       <Header/>
-      {!room
+      {!isRoomUpdated
         ? <Loading />
         : (<main className="page__main page__main--property">
           <section className="property">
@@ -87,10 +93,10 @@ const PageRoom = ({isAuthorized, onOffersUpdate}) => {
                   <h1 className="property__name">
                     {room.title}
                   </h1>
-                  <button className={
-                    `property__bookmark-button button
+                  <button onClick={handleFavButtonClick}
+                    className={`property__bookmark-button button
                     ${room.isFavorite ? `property__bookmark-button--active` : null}`}
-                  type="button">
+                    type="button">
                     <svg className="property__bookmark-icon" width={31} height={33}>
                       <use xlinkHref="#icon-bookmark" />
                     </svg>
@@ -173,16 +179,26 @@ const PageRoom = ({isAuthorized, onOffersUpdate}) => {
 PageRoom.propTypes = {
   isAuthorized: PropTypes.bool.isRequired,
   onOffersUpdate: PropTypes.func.isRequired,
+  onResetFavoriteStatus: PropTypes.func.isRequired,
+  room: hotelPropTypes,
+  id: PropTypes.number.isRequired,
 };
+
+const mapStateToProps = (state, props) => ({
+  room: state.offers.entities.find((offer) => offer.id === props.id),
+});
 
 const mapDispatchToProps = (dispatch) => ({
   onOffersUpdate(offers) {
     dispatch(ActionCreator.updateOffers(offers));
     return offers;
-  }
+  },
+  onResetFavoriteStatus(id, status) {
+    dispatch(resetFavoriteStatus(id, status));
+  },
 });
 
 export {PageRoom};
-export default connect(null, mapDispatchToProps)(PageRoom);
+export default connect(mapStateToProps, mapDispatchToProps)(PageRoom);
 
 

@@ -74,7 +74,7 @@ const ReviewForm = ({roomId, onSentReview}) => {
 };
 
 ReviewForm.propTypes = {
-  roomId: PropTypes.string.isRequired,
+  roomId: PropTypes.number.isRequired,
   onSentReview: PropTypes.func.isRequired,
 };
 

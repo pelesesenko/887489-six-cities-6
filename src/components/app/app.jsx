@@ -7,10 +7,10 @@ import PrivateRoute from '../private-route/private-route';
 import PageMain from '../page-main/page-main';
 import PageSignIn from '../page-sign-in/page-sign-in';
 import PageFavorites from '../page-favorites/page-favorites';
-import PageRoom from '../page-room/page-room';
 import PageNotFound from '../page-not-found/page-not-found';
 import Loading from '../loading/loading';
 import PropTypes from 'prop-types';
+import PageRoomContainer from '../page-room/page-room-container';
 
 
 const App = ({isAuthorized, isOffersLoaded, onLoadOffers}) => {
@@ -33,7 +33,7 @@ const App = ({isAuthorized, isOffersLoaded, onLoadOffers}) => {
           render={() => <PageFavorites/>}
         />
         <Route path={AppPaths.ROOM} exact>
-          <PageRoom isAuthorized={isAuthorized}/>
+          <PageRoomContainer isAuthorized={isAuthorized}/>
         </Route>
         <Route path={AppPaths.MAIN} exact render={() => (<PageMain />)}/>
         <Route path={AppPaths.NOT_FOUND} exact component={PageNotFound}/>
