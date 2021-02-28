@@ -6,7 +6,7 @@ import {reviewsAdapter} from '../../services/adapters';
 import {Grades, ReviewLength, APIRoutes} from '../../constants';
 
 const ReviewForm = ({roomId, onSentReview}) => {
-  const formRef = useRef(null)
+  const formRef = useRef(null);
   const initialState = {comment: ``, rating: 0};
 
   const [reviewForm, setReviewForm] = useState(initialState);
@@ -31,7 +31,9 @@ const ReviewForm = ({roomId, onSentReview}) => {
     .then((data) => onSentReview(data))
     .then(() => {
       setReviewForm({...initialState});
-      [...formRef.current.rating].forEach((el)=>{el.checked = false});
+      [...formRef.current.rating].forEach((el) => {
+        el.checked = false;
+      });
     })
     .catch(() => handleSendError());
   };

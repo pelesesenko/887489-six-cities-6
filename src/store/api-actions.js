@@ -39,8 +39,8 @@ export const logout = () => (dispatch, _getState, api) => (
 );
 
 export const resetFavoriteStatus = (id, status) => (dispatch, _getState, api) => (
-  api.post(APIRoutes.FAVORITES + id + '/' + status)
+  api.post(APIRoutes.FAVORITES + id + `/` + status)
   .then(({data}) => offerAdapter(data))
   .then((data) => dispatch(ActionCreator.updateOffers(data)))
   .catch(() =>{})
-)
+);

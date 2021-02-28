@@ -94,6 +94,7 @@ OfferCard.propTypes = {
   cardType: PropTypes.string.isRequired,
   onChangeActiveOffer: PropTypes.func,
   onResetFavoriteStatus: PropTypes.func.isRequired,
+  id: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state, props) => ({

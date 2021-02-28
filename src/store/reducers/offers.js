@@ -18,13 +18,35 @@ export const offers = (state = initialState, action) => {
     case ActionType.UPDATE_OFFERS:
       let newState = {...state};
       if (action.payload instanceof Array) {
+
         action.payload.forEach((newRoom) => {
-          newState.entities = state.entities.map(
-            (oldRoom) => newRoom.id === oldRoom.id ? newRoom : {...oldRoom});
+          let isFound = false;
+          newState.entities = state.entities.map((oldRoom) => {
+            if (newRoom.id === oldRoom.id) {
+              isFound = true;
+              return newRoom;
+            } else {
+              return {...oldRoom};
+            }
+          });
+          if (!isFound) {
+            newState.entities.push(newRoom);
+          }
         });
       } else {
-        newState.entities = state.entities.map(
-          (oldRoom) => action.payload.id === oldRoom.id ? action.payload : {...oldRoom});
+        let isFound = false;
+
+        newState.entities = state.entities.map((oldRoom) => {
+          if (action.payload.id === oldRoom.id) {
+            isFound = true;
+            return action.payload;
+          } else {
+            return {...oldRoom};
+          }
+        });
+        if (!isFound) {
+          newState.entities.push(action.payload);
+        }
       }
       return newState;
 

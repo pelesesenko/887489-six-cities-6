@@ -64,7 +64,7 @@ PageSignIn.propTypes = {
 const mapDispatchToProps = (dispatch) => ({
   onLogin(authData) {
     dispatch(login(authData));
-    dispatch(fetchOffers())
+    dispatch(fetchOffers());
   },
 });
 

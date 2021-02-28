@@ -1,51 +1,62 @@
-import React from 'react';
-// import PropTypes from 'prop-types';
+import React, {useEffect, useState} from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-
+import {createApi} from '../../services/api';
 import {hotelsPropTypes} from '../../prop-types';
 import Header from '../header/header';
 import FavoritesList from '../favorites-list/favorites-list';
+import Loading from '../loading/loading';
+import {Link} from 'react-router-dom';
+import {groupOffersByCity} from '../../utilities/utilities';
+import {offersAdapter} from '../../services/adapters';
+import {APIRoutes} from '../../constants';
+import {ActionCreator} from '../../store/actions';
 
-const PageFavorites = ({favorites}) => {
+const PageFavorites = ({onOffersUpd}) => {
 
-  // if (!isAuthorized) {history.push(`/login`);}
+  const [favorites, setFavorites] = useState(null);
 
-  const prepFavorites = [];
-  let swap = null;
-  for (let offer of favorites.slice().sort((a, b)=>a.city.name > b.city.name ? 1 : -1)) {
-    if (offer.city.name !== swap) {
-      prepFavorites.push({cityName: offer.city.name, favoritesInCity: []});
-      swap = offer.city.name;
-    }
-    prepFavorites[prepFavorites.length - 1].favoritesInCity.push(offer);
-  }
+  const dataApi = createApi();
+
+  useEffect(() => {
+    dataApi.get(APIRoutes.FAVORITES)
+    .then(({data}) => offersAdapter(data))
+    .then((data) => onOffersUpd(data))
+    .then((data) => groupOffersByCity(data))
+    .then((data) => setFavorites(data));
+  }, []);
+
 
   return (
-    <div className={`page${!favorites.length ? ` page--favorites-empty` : ``}`}>
+    <div className={`page
+    ${favorites !== null && !favorites.length ? ` page--favorites-empty` : ``}`}>
       <Header/>
-      <main className={`page__main page__main--favorites${!favorites.length ? ` page__main--favorites-empty` : ``}`}>
-        <div className="page__favorites-container container">
-          {favorites.length
-            ?
-            <section className="favorites">
-              <h1 className="favorites__title">Saved listing</h1>
-              <FavoritesList prepFavorites={prepFavorites} />
-            </section>
-            :
-            <section className="favorites favorites--empty">
-              <h1 className="visually-hidden">Favorites (empty)</h1>
-              <div className="favorites__status-wrapper">
-                <b className="favorites__status">Nothing yet saved.</b>
-                <p className="favorites__status-description">Save properties to narrow down search or plan your future trips.</p>
-              </div>
-            </section>
-          }
-        </div>
-      </main>
+      {favorites === null
+        ? <Loading />
+
+        : (<main className={`page__main page__main--favorites${!favorites.length ? ` page__main--favorites-empty` : ``}`}>
+          <div className="page__favorites-container container">
+            {favorites.length
+              ?
+              <section className="favorites">
+                <h1 className="favorites__title">Saved listing</h1>
+                <FavoritesList favorites={favorites} />
+              </section>
+              :
+              <section className="favorites favorites--empty">
+                <h1 className="visually-hidden">Favorites (empty)</h1>
+                <div className="favorites__status-wrapper">
+                  <b className="favorites__status">Nothing yet saved.</b>
+                  <p className="favorites__status-description">Save properties to narrow down search or plan your future trips.</p>
+                </div>
+              </section>
+            }
+          </div>
+        </main>)}
       <footer className="footer container">
-        <a className="footer__logo-link" href="main.html">
+        <Link className="footer__logo-link" to="/">
           <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width={64} height={33} />
-        </a>
+        </Link>
       </footer>
     </div>
   );
@@ -53,12 +64,19 @@ const PageFavorites = ({favorites}) => {
 
 PageFavorites.propTypes = {
   favorites: hotelsPropTypes,
-  // history: PropTypes.object.isRequired,
+  onOffersUpd: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   favorites: state.favorites,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  onOffersUpd(offers) {
+    dispatch(ActionCreator.updateOffers(offers));
+    return offers;
+  }
+});
+
 export {PageFavorites};
-export default connect(mapStateToProps, null)(PageFavorites);
+export default connect(mapStateToProps, mapDispatchToProps)(PageFavorites);

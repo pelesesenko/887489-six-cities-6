@@ -4,10 +4,10 @@ import {hotelsPropTypes} from '../../prop-types';
 
 import FavoritesGroup from '../favorites-group/favorites-group';
 
-const FavoritesList = ({prepFavorites}) => {
+const FavoritesList = ({favorites}) => {
   return (
     <ul className="favorites__list">
-      {prepFavorites.map((group) =>
+      {favorites.map((group) =>
         <FavoritesGroup group={group} key={group.cityName} />
       )}
     </ul>
@@ -15,9 +15,9 @@ const FavoritesList = ({prepFavorites}) => {
 };
 
 FavoritesList.propTypes = {
-  prepFavorites: PropTypes.arrayOf(PropTypes.shape({
+  favorites: PropTypes.arrayOf(PropTypes.shape({
     cityName: PropTypes.string.isRequired,
-    favoritesInCity: hotelsPropTypes
+    offersInCity: hotelsPropTypes
   }))
 };
 

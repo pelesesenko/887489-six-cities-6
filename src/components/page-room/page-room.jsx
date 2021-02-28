@@ -22,7 +22,7 @@ import {prepareRating, upFirst} from '../../utilities/utilities';
 
 const PageRoom = ({isAuthorized, onOffersUpdate}) => {
 
-  const id = useParams().id;
+  const id = +useParams().id;
   const history = useHistory();
 
   const [room, setRoom] = useState(null);
@@ -30,10 +30,10 @@ const PageRoom = ({isAuthorized, onOffersUpdate}) => {
   const [nearOffers, setNearOffers] = useState(null);
 
   const roomApi = createApi(
-    () => {
-      history.push(AppPaths.NOT_FOUND);
-    },
-    ErrorStatus.NOT_FOUND
+      () => {
+        history.push(AppPaths.NOT_FOUND);
+      },
+      ErrorStatus.NOT_FOUND
   );
 
   const roomDataApi = createApi();
@@ -42,7 +42,7 @@ const PageRoom = ({isAuthorized, onOffersUpdate}) => {
     roomApi.get(APIRoutes.OFFERS + id)
     .then(({data}) => offerAdapter(data))
     .then((data) => onOffersUpdate(data))
-    .then((data) => setRoom(data))
+    .then((data) => setRoom(data));
 
     roomDataApi.get(APIRoutes.COMMENTS + id)
     .then(({data}) => reviewsAdapter(data))
@@ -54,7 +54,7 @@ const PageRoom = ({isAuthorized, onOffersUpdate}) => {
     .then((data) => onOffersUpdate(data))
     .then((data) => setNearOffers(data))
     .catch(() => {});
-  }, [id]);
+  }, []);
 
   const onSentReview = (newReviews) => {
     setReviews(newReviews);
@@ -69,7 +69,7 @@ const PageRoom = ({isAuthorized, onOffersUpdate}) => {
   return (
     <div className="page">
       <Header/>
-      {room === null
+      {!room
         ? <Loading />
         : (<main className="page__main page__main--property">
           <section className="property">
@@ -146,13 +146,13 @@ const PageRoom = ({isAuthorized, onOffersUpdate}) => {
                   </div>
                 </div>
                 <section className="property__reviews reviews">
-                  {reviews === null ? <Loading /> : <ReviewsList reviews={reviews}/>}
+                  {!reviews ? <Loading /> : <ReviewsList reviews={reviews}/>}
                   {isAuthorized && <ReviewForm roomId={id} onSentReview={onSentReview}/>}
                 </section>
               </div>
             </div>
             <section className="property__map map">
-              {nearOffers === null
+              {!nearOffers
                 ? <Loading />
                 : <Map offers={nearOffers} city={nearOffers[0].city} style={mapStyle}/>}
             </section>
@@ -176,9 +176,9 @@ PageRoom.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  onOffersUpdate (offers) {
+  onOffersUpdate(offers) {
     dispatch(ActionCreator.updateOffers(offers));
-    return offers
+    return offers;
   }
 });
 

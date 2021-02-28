@@ -1,7 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {ActionCreator} from '../../store/actions';
-import {fetchOffers} from '../../store/api-actions';
 import {offersInCitySelector} from '../../store/selectors';
 import {Cities, SortOrders} from '../../constants';
 import Header from '../header/header';
@@ -18,7 +17,6 @@ const PageMain = (props) => {
 
   const {
     isOffersLoaded,
-    onLoadOffers,
     offersInCity,
     currentCityName,
     onSetCity,
@@ -35,14 +33,6 @@ const PageMain = (props) => {
   const mapStyle = {
     height: `100%`
   };
-
-  useEffect(() => {
-    if (!isOffersLoaded) {
-      onLoadOffers();
-    }
-  }, [isOffersLoaded]
-
-  );
 
   return (
     <div className="page page--gray page--main">
@@ -99,7 +89,6 @@ PageMain.propTypes = {
   sortOrder: PropTypes.oneOf(Object.values(SortOrders)),
   onSetCity: PropTypes.func.isRequired,
   onSetSortOrder: PropTypes.func,
-  onLoadOffers: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -110,9 +99,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onLoadOffers() {
-    dispatch(fetchOffers());
-  },
   onSetCity(cityName) {
     dispatch(ActionCreator.setCity(cityName));
   },

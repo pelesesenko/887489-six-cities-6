@@ -6,7 +6,7 @@ import OfferCard from '../offer-card/offer-card';
 import {CardTypes} from '../../constants';
 
 const FavoritesGroup = ({group}) => {
-  const {cityName, favoritesInCity} = group;
+  const {cityName, offersInCity} = group;
 
   return (
     <li className="favorites__locations-items" key={cityName}>
@@ -18,7 +18,7 @@ const FavoritesGroup = ({group}) => {
         </div>
       </div>
       <div className="favorites__places">
-        {favoritesInCity.map((offer) =>
+        {offersInCity.map((offer) =>
           <OfferCard id={offer.id} cardType={CardTypes.FAVORITES_OFFERS} key={offer.id} />
         )}
       </div>
@@ -29,7 +29,7 @@ const FavoritesGroup = ({group}) => {
 FavoritesGroup.propTypes = {
   group: PropTypes.shape({
     cityName: PropTypes.string.isRequired,
-    favoritesInCity: hotelsPropTypes
+    offersInCity: hotelsPropTypes
   })
 };
 
