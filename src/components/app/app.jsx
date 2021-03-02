@@ -1,8 +1,9 @@
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
-import {AppPaths, AuthorizationStatus} from '../../constants';
+import {AppPaths} from '../../constants';
 import {fetchOffers} from '../../store/api-actions';
+import {isAuthorizedSelector, isOffersLoadedSelector} from '../../store/selectors';
 import PrivateRoute from '../private-route/private-route';
 import PageMain from '../page-main/page-main';
 import PageSignIn from '../page-sign-in/page-sign-in';
@@ -11,6 +12,8 @@ import PageNotFound from '../page-not-found/page-not-found';
 import Loading from '../loading/loading';
 import PropTypes from 'prop-types';
 import PageRoomContainer from '../page-room/page-room-container';
+import SeverError from '../server-error/server-error';
+import './app.css';
 
 
 const App = ({isAuthorized, isOffersLoaded, onLoadOffers}) => {
@@ -22,7 +25,13 @@ const App = ({isAuthorized, isOffersLoaded, onLoadOffers}) => {
   }, [isOffersLoaded]
   );
 
-  return (!isOffersLoaded ? <Loading /> :
+  return (!isOffersLoaded
+    ?
+    <>
+      <SeverError/>
+      <Loading />
+    </>
+    :
     <BrowserRouter>
       <Switch>
         <Route path={AppPaths.LOGIN} exact render={() => (
@@ -50,8 +59,9 @@ App.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  isAuthorized: state.authorizationStatus === AuthorizationStatus.AUTH,
-  isOffersLoaded: state.offers.isLoaded
+  isAuthorized: isAuthorizedSelector(state),
+  isOffersLoaded: isOffersLoadedSelector(state),
+  // isServerAvailable: serverAvailabilitySelector(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

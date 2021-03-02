@@ -1,7 +1,12 @@
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {ActionCreator} from '../../store/actions';
-import {offersInCitySelector} from '../../store/selectors';
+import {
+  sortedOffersInCitySelector,
+  currentCityNameSelector,
+  sortOrderSelector,
+  isOffersLoadedSelector
+} from '../../store/selectors';
 import {Cities, SortOrders} from '../../constants';
 import Header from '../header/header';
 import Loading from '../loading/loading';
@@ -92,10 +97,10 @@ PageMain.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  offersInCity: offersInCitySelector(state),
-  currentCityName: state.currentCityName,
-  sortOrder: state.sortOrder,
-  isOffersLoaded: state.offers.isLoaded
+  offersInCity: sortedOffersInCitySelector(state),
+  currentCityName: currentCityNameSelector(state),
+  sortOrder: sortOrderSelector(state),
+  isOffersLoaded: isOffersLoadedSelector(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,20 +1,34 @@
 import React, {useEffect, useState} from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {createApi} from '../../services/api';
-import {hotelsPropTypes} from '../../prop-types';
 import Header from '../header/header';
 import FavoritesList from '../favorites-list/favorites-list';
 import Loading from '../loading/loading';
 import {Link} from 'react-router-dom';
 import {groupOffersByCity} from '../../utilities/utilities';
 import {offersAdapter} from '../../services/adapters';
-import {APIRoutes} from '../../constants';
+import {APIRoutes, ErrorStatus} from '../../constants';
 import {ActionCreator} from '../../store/actions';
 
-const PageFavorites = ({onOffersUpd}) => {
+const PageFavorites = () => {
 
   const [favorites, setFavorites] = useState(null);
+
+  const dispatch = useDispatch();
+
+  const onOffersUpd = (offers) => {
+    dispatch(ActionCreator.updateOffers(offers));
+    return offers;
+  };
+  const onLoadSuccess = () => {
+    dispatch(ActionCreator.setServerAvailability(true));
+  };
+  const onLoadError = (err) => {
+    const {response} = err;
+    if (response.status !== ErrorStatus.UNAUTHORIZED) {
+      dispatch(ActionCreator.setServerAvailability(false));
+    }
+  };
 
   const dataApi = createApi();
 
@@ -23,7 +37,9 @@ const PageFavorites = ({onOffersUpd}) => {
     .then(({data}) => offersAdapter(data))
     .then((data) => onOffersUpd(data))
     .then((data) => groupOffersByCity(data))
-    .then((data) => setFavorites(data));
+    .then((data) => setFavorites(data))
+    .then(() => onLoadSuccess())
+    .catch((err) => onLoadError(err));
   }, []);
 
 
@@ -62,21 +78,4 @@ const PageFavorites = ({onOffersUpd}) => {
   );
 };
 
-PageFavorites.propTypes = {
-  favorites: hotelsPropTypes,
-  onOffersUpd: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  favorites: state.favorites,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onOffersUpd(offers) {
-    dispatch(ActionCreator.updateOffers(offers));
-    return offers;
-  }
-});
-
-export {PageFavorites};
-export default connect(mapStateToProps, mapDispatchToProps)(PageFavorites);
+export default PageFavorites;

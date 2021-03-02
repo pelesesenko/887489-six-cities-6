@@ -8,6 +8,7 @@ import {createApi} from '../../services/api';
 import {offerAdapter, offersAdapter, reviewsAdapter} from '../../services/adapters';
 import {ActionCreator} from '../../store/actions';
 import {resetFavoriteStatus} from '../../store/api-actions';
+import {offerByIdSelector} from '../../store/selectors';
 
 
 import Header from '../header/header';
@@ -21,9 +22,7 @@ import NearbyList from '../nearby-list/nearby-list';
 
 import {prepareRating, upFirst} from '../../utilities/utilities';
 
-
-const PageRoom = ({id, isAuthorized, onOffersUpdate, room, onResetFavoriteStatus}) => {
-
+const PageRoom = ({id, isAuthorized, onOffersUpdate, room, onResetFavoriteStatus, onLoadError, onLoadSuccess}) => {
   const history = useHistory();
 
   const [isRoomUpdated, setRoomUpdated] = useState(false);
@@ -43,25 +42,33 @@ const PageRoom = ({id, isAuthorized, onOffersUpdate, room, onResetFavoriteStatus
     roomApi.get(APIRoutes.OFFERS + id)
     .then(({data}) => offerAdapter(data))
     .then((data) => onOffersUpdate(data))
-    .then(() => setRoomUpdated(true));
+    .then(() => setRoomUpdated(true))
+    .then(() => onLoadSuccess())
+    .catch((err) => onLoadError(err));
 
     roomDataApi.get(APIRoutes.COMMENTS + id)
     .then(({data}) => reviewsAdapter(data))
     .then((data) => setReviews(data))
-    .catch(() => {});
+    .then(() => onLoadSuccess())
+    .catch((err) => onLoadError(err));
 
     roomDataApi.get(APIRoutes.OFFERS + id + APIRoutes.NEARBY)
     .then(({data}) => offersAdapter(data))
     .then((data) => onOffersUpdate(data))
     .then((data) => setNearOffers(data))
-    .catch(() => {});
-  }, []);
+    .then(() => onLoadSuccess())
+    .catch((err) => onLoadError(err));
+  }, [id]);
 
   const onSentReview = (newReviews) => {
     setReviews(newReviews);
   };
 
   const handleFavButtonClick = () => {
+    if (!isAuthorized) {
+      history.push(AppPaths.LOGIN);
+      return;
+    }
     const status = room.isFavorite ? 0 : 1;
     onResetFavoriteStatus(id, status);
   };
@@ -160,7 +167,7 @@ const PageRoom = ({id, isAuthorized, onOffersUpdate, room, onResetFavoriteStatus
             <section className="property__map map">
               {!nearOffers
                 ? <Loading />
-                : <Map offers={nearOffers} city={nearOffers[0].city} style={mapStyle}/>}
+                : <Map offers={[...nearOffers, room]} cityName={room.city.name} style={mapStyle} activeOfferId={id}/>}
             </section>
           </section>
           <div className="container">
@@ -168,7 +175,7 @@ const PageRoom = ({id, isAuthorized, onOffersUpdate, room, onResetFavoriteStatus
               <h2 className="near-places__title">Other places in the neighbourhood</h2>
               {nearOffers === null
                 ? <Loading />
-                : <NearbyList nearOffers={nearOffers}/>}
+                : <NearbyList nearOffersId={nearOffers.map((offer) => offer.id)}/>}
             </section>
           </div>
         </main>)}
@@ -180,12 +187,14 @@ PageRoom.propTypes = {
   isAuthorized: PropTypes.bool.isRequired,
   onOffersUpdate: PropTypes.func.isRequired,
   onResetFavoriteStatus: PropTypes.func.isRequired,
+  onLoadSuccess: PropTypes.func.isRequired,
+  onLoadError: PropTypes.func.isRequired,
   room: hotelPropTypes,
   id: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state, props) => ({
-  room: state.offers.entities.find((offer) => offer.id === props.id),
+  room: offerByIdSelector(state, props),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -195,6 +204,15 @@ const mapDispatchToProps = (dispatch) => ({
   },
   onResetFavoriteStatus(id, status) {
     dispatch(resetFavoriteStatus(id, status));
+  },
+  onLoadSuccess() {
+    dispatch(ActionCreator.setServerAvailability(true));
+  },
+  onLoadError(err) {
+    const {response} = err;
+    if (response.status !== ErrorStatus.NOT_FOUND && response.status !== ErrorStatus.BAD_REQUEST) {
+      dispatch(ActionCreator.setServerAvailability(false));
+    }
   },
 });
 

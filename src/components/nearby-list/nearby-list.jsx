@@ -1,22 +1,22 @@
 import React from 'react';
-import {hotelsPropTypes} from '../../prop-types';
+import PropTypes from 'prop-types';
 
 import OfferCard from '../offer-card/offer-card';
 import {CardTypes} from '../../constants';
 
-export const NearbyList = ({nearOffers}) => {
+export const NearbyList = ({nearOffersId}) => {
 
   return (
     <div className="near-places__list places__list">
-      {nearOffers.map((offer) =>
-        <OfferCard id={offer.id} cardType={CardTypes.NEARBY_OFFERS} key={offer.id} />
+      {nearOffersId.map((id) =>
+        <OfferCard id={id} cardType={CardTypes.NEARBY_OFFERS} key={id} />
       )}
     </div>
   );
 };
 
 NearbyList.propTypes = {
-  nearOffers: hotelsPropTypes
+  nearOffersId: PropTypes.arrayOf(PropTypes.number).isRequired
 };
 
 export default NearbyList;

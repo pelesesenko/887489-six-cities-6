@@ -7,8 +7,6 @@ import {Provider} from 'react-redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {reducer} from './store/reducers/reducer';
 import App from './components/app/app';
-import {Reviews} from './mocks/reviews';
-import {Favorites} from './mocks/favorites';
 import {ActionCreator} from './store/actions';
 import {checkAuth} from './store/api-actions';
 import {AuthorizationStatus, ErrorStatus} from './constants';
@@ -25,10 +23,7 @@ store.dispatch(checkAuth());
 
 ReactDOM.render(
     <Provider store={store}>
-      <App
-        reviews={Reviews}
-        favorites={Favorites}
-      />
+      <App/>
     </Provider>,
     document.querySelector(`#root`)
 );

@@ -7,6 +7,7 @@ export const ActionType = {
   REQUIRED_AUTHORIZATION: `user/required-authorization`,
   SET_CURRENT_USER: `user/set-current-user`,
   UPDATE_OFFERS: `data/update-offers`,
+  SET_SERVER_AVAILABILITY: `api/set-server-availability`,
 };
 
 export const ActionCreator = {
@@ -38,6 +39,11 @@ export const ActionCreator = {
   updateOffers: (offers) => ({
     type: ActionType.UPDATE_OFFERS,
     payload: offers,
+  }),
+
+  setServerAvailability: (status) => ({
+    type: ActionType.SET_SERVER_AVAILABILITY,
+    payload: status,
   }),
 };
 

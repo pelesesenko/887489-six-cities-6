@@ -41,6 +41,8 @@ export const APIRoutes = {
   LOGOUT: `/logout`,
 };
 
+export const roomLink = `/offer/`;
+
 export const AuthorizationStatus = {
   AUTH: `AUTH`,
   NO_AUTH: `NO_AUTH`
@@ -49,6 +51,7 @@ export const AuthorizationStatus = {
 export const ErrorStatus = {
   UNAUTHORIZED: 401,
   NOT_FOUND: 404,
+  BAD_REQUEST: 400,
 };
 
 export const ReviewLength = {

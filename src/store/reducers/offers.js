@@ -26,7 +26,7 @@ export const offers = (state = initialState, action) => {
               isFound = true;
               return newRoom;
             } else {
-              return {...oldRoom};
+              return oldRoom;
             }
           });
           if (!isFound) {
@@ -41,7 +41,7 @@ export const offers = (state = initialState, action) => {
             isFound = true;
             return action.payload;
           } else {
-            return {...oldRoom};
+            return oldRoom;
           }
         });
         if (!isFound) {

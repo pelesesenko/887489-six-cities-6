@@ -60,7 +60,7 @@ const Map = (props) => {
       });
     };
 
-  }, [offers]);
+  }, [cityName]);
 
   useEffect(() => {
 
@@ -74,7 +74,7 @@ const Map = (props) => {
       const activeIndex = offers.findIndex((offer) => offer.id === activeOfferId);
       pins[activeIndex].src = `./img/pin-active.svg`;
     }
-  }, [activeOfferId]);
+  }, [activeOfferId, offers]);
 
   return (
     <div id="map" style={style} ref={mapRef}></div>
