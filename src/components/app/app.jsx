@@ -1,22 +1,37 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
-import {AppPaths, AuthorizationStatus} from '../../constants';
+import {AppPaths} from '../../constants';
+import {fetchOffers} from '../../store/api-actions';
+import {isAuthorizedSelector, isOffersLoadedSelector} from '../../store/selectors';
 import PrivateRoute from '../private-route/private-route';
 import PageMain from '../page-main/page-main';
 import PageSignIn from '../page-sign-in/page-sign-in';
 import PageFavorites from '../page-favorites/page-favorites';
-import PageRoom from '../page-room/page-room';
 import PageNotFound from '../page-not-found/page-not-found';
+import Loading from '../loading/loading';
 import PropTypes from 'prop-types';
-import {hotelsPropTypes, commentsPropTypes} from '../../prop-types';
+import PageRoomContainer from '../page-room/page-room-container';
+import SeverError from '../server-error/server-error';
+import './app.css';
 
-import {Offers as offersMock} from '../../mocks/offers';
 
-const App = (props) => {
-  const {reviews, isAuthorized} = props;
+const App = ({isAuthorized, isOffersLoaded, onLoadOffers}) => {
 
-  return (
+  useEffect(() => {
+    if (!isOffersLoaded) {
+      onLoadOffers();
+    }
+  }, [isOffersLoaded]
+  );
+
+  return (!isOffersLoaded
+    ?
+    <>
+      <SeverError/>
+      <Loading />
+    </>
+    :
     <BrowserRouter>
       <Switch>
         <Route path={AppPaths.LOGIN} exact render={() => (
@@ -27,7 +42,7 @@ const App = (props) => {
           render={() => <PageFavorites/>}
         />
         <Route path={AppPaths.ROOM} exact>
-          <PageRoom reviews={reviews} room={offersMock[1]} nearOffers={offersMock.slice(2, 5)}/>
+          <PageRoomContainer isAuthorized={isAuthorized}/>
         </Route>
         <Route path={AppPaths.MAIN} exact render={() => (<PageMain />)}/>
         <Route path={AppPaths.NOT_FOUND} exact component={PageNotFound}/>
@@ -38,16 +53,23 @@ const App = (props) => {
 };
 
 App.propTypes = {
-  offers: hotelsPropTypes,
-  reviews: commentsPropTypes,
   isAuthorized: PropTypes.bool.isRequired,
+  onLoadOffers: PropTypes.func.isRequired,
+  isOffersLoaded: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  isAuthorized: state.authorizationStatus === AuthorizationStatus.AUTH,
-  offers: state.offers.entities
+  isAuthorized: isAuthorizedSelector(state),
+  isOffersLoaded: isOffersLoadedSelector(state),
+  // isServerAvailable: serverAvailabilitySelector(state),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onLoadOffers() {
+    dispatch(fetchOffers());
+  },
 });
 
 export {App};
-export default connect(mapStateToProps, null)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 

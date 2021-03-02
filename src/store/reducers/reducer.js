@@ -5,7 +5,7 @@ import {authorizationStatus} from './auth-status';
 import {sortOrder} from './sort-order';
 import {currentCityName} from './current-city';
 import {currentUser} from './current-user';
-import {favorites} from './favorites';
+import {serverAvailability} from './server-availability';
 
 export const reducer = combineReducers({
   currentCityName,
@@ -13,5 +13,5 @@ export const reducer = combineReducers({
   offers,
   authorizationStatus,
   currentUser,
-  favorites,
+  serverAvailability,
 });

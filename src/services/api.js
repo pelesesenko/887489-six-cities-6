@@ -14,6 +14,7 @@ export const createApi = (onError, errorStatus) => {
   const onSuccess = (response) => response;
 
   const onFail = (err) => {
+
     const {response} = err;
 
     if (response.status === errorStatus) {

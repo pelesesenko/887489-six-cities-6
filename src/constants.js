@@ -34,12 +34,14 @@ export const AppPaths = {
 
 export const APIRoutes = {
   OFFERS: `/hotels/`,
-  FAVORITES: `/favorite`,
+  FAVORITES: `/favorite/`,
   COMMENTS: `/comments/`,
   NEARBY: `/nearby`,
   LOGIN: `/login`,
   LOGOUT: `/logout`,
 };
+
+export const roomLink = `/offer/`;
 
 export const AuthorizationStatus = {
   AUTH: `AUTH`,
@@ -49,6 +51,7 @@ export const AuthorizationStatus = {
 export const ErrorStatus = {
   UNAUTHORIZED: 401,
   NOT_FOUND: 404,
+  BAD_REQUEST: 400,
 };
 
 export const ReviewLength = {

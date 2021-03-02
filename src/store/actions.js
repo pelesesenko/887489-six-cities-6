@@ -1,11 +1,13 @@
 // import Cities from '../../constants';
 
 export const ActionType = {
-  SET_CITY: `MAIN/SET_CITY`,
-  SET_SORT_ORDER: `MAIN/SET_SORT_ORDER`,
-  LOAD_OFFERS: `DATA/LOAD_OFFERS`,
-  REQUIRED_AUTHORIZATION: `USER/REQUIRED_AUTHORIZATION`,
-  SET_CURRENT_USER: `USER/SET_CURRENT_USER`,
+  SET_CITY: `main/set-city`,
+  SET_SORT_ORDER: `main/set-sort-order`,
+  LOAD_OFFERS: `data/load-offers`,
+  REQUIRED_AUTHORIZATION: `user/required-authorization`,
+  SET_CURRENT_USER: `user/set-current-user`,
+  UPDATE_OFFERS: `data/update-offers`,
+  SET_SERVER_AVAILABILITY: `api/set-server-availability`,
 };
 
 export const ActionCreator = {
@@ -29,9 +31,19 @@ export const ActionCreator = {
     payload: status
   }),
 
-  setCurrntUser: (user) => ({
+  setCurrentUser: (user) => ({
     type: ActionType.SET_CURRENT_USER,
     payload: user,
+  }),
+
+  updateOffers: (offers) => ({
+    type: ActionType.UPDATE_OFFERS,
+    payload: offers,
+  }),
+
+  setServerAvailability: (status) => ({
+    type: ActionType.SET_SERVER_AVAILABILITY,
+    payload: status,
   }),
 };
 
