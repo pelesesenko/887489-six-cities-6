@@ -18,4 +18,4 @@ OffersList.propTypes = {
   onChangeActiveOffer: PropTypes.func
 };
 
-export default OffersList;
+export default React.memo(OffersList, (prev, next) => prev.items === next.items);

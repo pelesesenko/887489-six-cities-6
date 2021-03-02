@@ -4,7 +4,10 @@ import {offersAdapter, offerAdapter} from '../services/adapters';
 
 export const handleServerError = (err, dispatch) => {
   const {response} = err;
-  if (response.status !== ErrorStatus.UNAUTHORIZED && response.status !== ErrorStatus.NOT_FOUND) {
+  if (response.status !== ErrorStatus.UNAUTHORIZED
+     && response.status !== ErrorStatus.NOT_FOUND
+     && response.status !== ErrorStatus.BAD_REQUEST
+  ) {
     dispatch(ActionCreator.setServerAvailability(false));
   }
 };

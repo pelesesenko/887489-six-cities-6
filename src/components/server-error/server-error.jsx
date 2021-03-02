@@ -1,8 +1,9 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
+import {serverAvailabilitySelector} from '../../store/selectors';
 
 const SeverError = () => {
-  const isServerAvailable = useSelector((state) => state.serverAvailability);
+  let isServerAvailable = useSelector((state) => serverAvailabilitySelector(state));
   return (
     <>
       {!isServerAvailable && <p style={{color: `red`}}>Server is not available</p>}

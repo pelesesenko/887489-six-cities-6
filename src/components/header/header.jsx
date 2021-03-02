@@ -67,4 +67,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export {Header};
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(
+    React.memo(Header, (prev, next) => prev.isAuthorized === next.isAuthorized));

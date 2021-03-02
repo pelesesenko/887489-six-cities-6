@@ -46,4 +46,4 @@ SortSelect.propTypes = {
   onSetOrder: PropTypes.func
 };
 
-export default SortSelect;
+export default React.memo(SortSelect);
