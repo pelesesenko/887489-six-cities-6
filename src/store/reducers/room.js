@@ -23,8 +23,8 @@ export const room = (state = initialState, action) => {
         isNearbyLoaded: true,
         nearbyIds: action.payload.map((nearRoom) => nearRoom.id)
       };
-
-
+      case ActionType.UPDATE_OFFERS_ROOM_CLEAR:
+      return initialState;
 
     default: return state;
   }
