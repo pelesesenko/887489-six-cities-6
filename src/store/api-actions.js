@@ -1,6 +1,5 @@
 import {ActionCreator} from '../store/actions';
 import {AuthorizationStatus, APIRoutes, ErrorStatus} from '../constants';
-import {offersAdapter, offerAdapter} from '../services/adapters';
 
 export const handleServerError = (err, dispatch) => {
   const {response} = err;
@@ -18,8 +17,7 @@ export const handleSuccess = (dispatch) => {
 
 export const fetchOffers = () => (dispatch, _getState, api) => (
   api.get(APIRoutes.OFFERS)
-  .then(({data}) => offersAdapter(data))
-  .then((data) => dispatch(ActionCreator.loadOffers(data)))
+  .then(({data}) => dispatch(ActionCreator.loadOffers(data)))
   .then(() => handleSuccess(dispatch))
   .catch((err) => handleServerError(err, dispatch))
 );
@@ -58,8 +56,7 @@ export const logout = () => (dispatch, _getState, api) => (
 
 export const resetFavoriteStatus = (id, status) => (dispatch, _getState, api) => (
   api.post(APIRoutes.FAVORITES + id + `/` + status)
-  .then(({data}) => offerAdapter(data))
-  .then((data) => dispatch(ActionCreator.updateOffers(data)))
+  .then(({data}) => dispatch(ActionCreator.updateOffers(data)))
   .then(() => handleSuccess(dispatch))
   .catch((err) => handleServerError(err, dispatch))
 );

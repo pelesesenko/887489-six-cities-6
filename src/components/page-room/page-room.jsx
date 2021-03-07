@@ -5,7 +5,6 @@ import {hotelPropTypes} from '../../prop-types';
 import {useHistory} from 'react-router-dom';
 import {ErrorStatus, AppPaths, APIRoutes} from '../../constants';
 import {createApi} from '../../services/api';
-import {offerAdapter, offersAdapter, reviewsAdapter} from '../../services/adapters';
 import {ActionCreator} from '../../store/actions';
 import {resetFavoriteStatus} from '../../store/api-actions';
 import {offerByIdSelector} from '../../store/selectors';
@@ -20,7 +19,7 @@ import ReviewsList from '../reviews-list/reviews-list';
 import Map from '../map/map';
 import NearbyList from '../nearby-list/nearby-list';
 
-import {prepareRating, upFirst} from '../../utilities/utilities';
+import {prepareRating, upFirst} from '../../services/utilities';
 
 const PageRoom = ({id, isAuthorized, onOffersUpdate, room, onResetFavoriteStatus, onLoadError, onLoadSuccess}) => {
   const history = useHistory();
@@ -40,21 +39,18 @@ const PageRoom = ({id, isAuthorized, onOffersUpdate, room, onResetFavoriteStatus
 
   useEffect(() => {
     roomApi.get(APIRoutes.OFFERS + id)
-    .then(({data}) => offerAdapter(data))
-    .then((data) => onOffersUpdate(data))
+    .then(({data}) => onOffersUpdate(data))
     .then(() => setRoomUpdated(true))
     .then(() => onLoadSuccess())
     .catch((err) => onLoadError(err));
 
     roomDataApi.get(APIRoutes.COMMENTS + id)
-    .then(({data}) => reviewsAdapter(data))
-    .then((data) => setReviews(data))
+    .then(({data}) => setReviews(data))
     .then(() => onLoadSuccess())
     .catch((err) => onLoadError(err));
 
     roomDataApi.get(APIRoutes.OFFERS + id + APIRoutes.NEARBY)
-    .then(({data}) => offersAdapter(data))
-    .then((data) => onOffersUpdate(data))
+    .then(({data}) => onOffersUpdate(data))
     .then((data) => setNearOffers(data))
     .then(() => onLoadSuccess())
     .catch((err) => onLoadError(err));

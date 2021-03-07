@@ -12,7 +12,7 @@ import PageNotFound from '../page-not-found/page-not-found';
 import Loading from '../loading/loading';
 import PropTypes from 'prop-types';
 import PageRoomContainer from '../page-room/page-room-container';
-import SeverError from '../server-error/server-error';
+import ServerError from '../server-error/server-error';
 import './app.css';
 
 
@@ -28,7 +28,7 @@ const App = ({isAuthorized, isOffersLoaded, onLoadOffers}) => {
   return (!isOffersLoaded
     ?
     <>
-      <SeverError/>
+      <ServerError/>
       <Loading />
     </>
     :

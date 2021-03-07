@@ -3,7 +3,7 @@ import {Link, useHistory} from 'react-router-dom';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
-import {prepareRating, upFirst} from '../../utilities/utilities';
+import {prepareRating, upFirst} from '../../services/utilities';
 import {isAuthorizedSelector, createOfferByIdSelector} from '../../store/selectors';
 import {hotelPropTypes} from '../../prop-types';
 import {CardTypes, roomLink, AppPaths} from '../../constants';

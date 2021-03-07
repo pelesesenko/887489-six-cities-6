@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {snakeToCamelAdapter} from './utilities';
 
 const BACKEND_URL = `https://6.react.pages.academy/six-cities`;
 const TIMEOUT = 5000;
@@ -11,7 +12,10 @@ export const createApi = (onError, errorStatus) => {
     withCredentials: true
   });
 
-  const onSuccess = (response) => response;
+  const onSuccess = (response) => {
+    response.data = snakeToCamelAdapter(response.data);
+    return response;
+  };
 
   const onFail = (err) => {
 

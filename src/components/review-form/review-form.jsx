@@ -3,7 +3,6 @@ import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 
 import {createApi} from '../../services/api';
-import {reviewsAdapter} from '../../services/adapters';
 import {Grades, ReviewLength, APIRoutes, ErrorStatus} from '../../constants';
 import {ActionCreator} from '../../store/actions';
 
@@ -41,14 +40,14 @@ const ReviewForm = ({roomId, onSentReview}) => {
     setIsDataSending(true);
 
     reviewFormApi.post(APIRoutes.COMMENTS + roomId, reviewForm)
-    .then(({data}) => reviewsAdapter(data))
-    .then((data) => onSentReview(data))
+    .then(({data}) => onSentReview(data))
     .then(() => {
       setReviewForm({...initialState});
       [...formRef.current.rating].forEach((el) => {
         el.checked = false;
       });
-    }).then(() => setIsDataSending(false))
+    })
+    .then(() => setIsDataSending(false))
     .then(() => dispatch(ActionCreator.setServerAvailability(true)))
     .catch((err) => handleSendError(err));
   };

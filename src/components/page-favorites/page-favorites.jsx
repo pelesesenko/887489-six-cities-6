@@ -5,8 +5,7 @@ import Header from '../header/header';
 import FavoritesList from '../favorites-list/favorites-list';
 import Loading from '../loading/loading';
 import {Link} from 'react-router-dom';
-import {groupOffersByCity} from '../../utilities/utilities';
-import {offersAdapter} from '../../services/adapters';
+import {groupOffersByCity} from '../../services/utilities';
 import {APIRoutes, ErrorStatus} from '../../constants';
 import {ActionCreator} from '../../store/actions';
 
@@ -34,8 +33,7 @@ const PageFavorites = () => {
 
   useEffect(() => {
     dataApi.get(APIRoutes.FAVORITES)
-    .then(({data}) => offersAdapter(data))
-    .then((data) => onOffersUpd(data))
+    .then(({data}) => onOffersUpd(data))
     .then((data) => groupOffersByCity(data))
     .then((data) => setFavorites(data))
     .then(() => onLoadSuccess())

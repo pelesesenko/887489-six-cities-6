@@ -1,5 +1,5 @@
 import React from 'react';
-import {prepareRating} from '../../utilities/utilities';
+import {prepareRating} from '../../services/utilities';
 import {commentPropTypes} from '../../prop-types';
 
 const Review = ({review}) => {
