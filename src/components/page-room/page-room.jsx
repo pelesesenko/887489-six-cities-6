@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {hotelPropTypes} from '../../prop-types';
-import {useHistory} from 'react-router-dom';
 import {ErrorStatus, AppPaths, APIRoutes} from '../../constants';
 import {createApi} from '../../services/api';
 import {ActionCreator} from '../../store/actions';
@@ -18,11 +17,11 @@ import RoomGood from '../room-good/room-good';
 import ReviewsList from '../reviews-list/reviews-list';
 import Map from '../map/map';
 import NearbyList from '../nearby-list/nearby-list';
+import history from '../../browser-history';
 
 import {prepareRating, upFirst} from '../../services/utilities';
 
 const PageRoom = ({id, isAuthorized, onOffersUpdate, room, onResetFavoriteStatus, onLoadError, onLoadSuccess}) => {
-  const history = useHistory();
 
   const [isRoomUpdated, setRoomUpdated] = useState(false);
   const [reviews, setReviews] = useState(null);

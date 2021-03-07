@@ -15,7 +15,10 @@ export const offers = (state = initialState, action) => {
         entities: action.payload,
       };
 
-    case ActionType.UPDATE_OFFERS:
+    case ActionType.UPDATE_OFFERS_ROOM:
+    case ActionType.UPDATE_OFFERS_NEARBY:
+    case ActionType.UPDATE_OFFERS_FAVORITE:
+    case ActionType.UPDATE_OFFERS_FAVORITES:
       let newState = {...state};
       if (action.payload instanceof Array) {
 
