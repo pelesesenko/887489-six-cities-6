@@ -1,4 +1,4 @@
-import {ActionType} from '../actions';
+import {ActionType, ActionTypeDetails} from '../actions';
 
 const initialState = {
   isLoaded: false,
@@ -15,7 +15,10 @@ export const offers = (state = initialState, action) => {
         entities: action.payload,
       };
 
-    case ActionType.UPDATE_OFFERS:
+    case ActionType.UPDATE_OFFERS + ActionTypeDetails.ROOM:
+    case ActionType.UPDATE_OFFERS + ActionTypeDetails.NEARBY:
+    case ActionType.UPDATE_OFFERS + ActionTypeDetails.FAVORITE:
+    case ActionType.UPDATE_OFFERS + ActionTypeDetails.FAVORITES:
       let newState = {...state};
       if (action.payload instanceof Array) {
 

@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
-import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
+import {Router as BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
+import browserHistory from "../../browser-history";
 import {AppPaths} from '../../constants';
 import {fetchOffers} from '../../store/api-actions';
 import {isAuthorizedSelector, isOffersLoadedSelector} from '../../store/selectors';
@@ -32,7 +33,8 @@ const App = ({isAuthorized, isOffersLoaded, onLoadOffers}) => {
       <Loading />
     </>
     :
-    <BrowserRouter>
+    <BrowserRouter history={browserHistory}
+    >
       <Switch>
         <Route path={AppPaths.LOGIN} exact render={() => (
           !isAuthorized ? <PageSignIn/> : <Redirect to={AppPaths.MAIN}/>

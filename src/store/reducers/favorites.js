@@ -1,14 +1,21 @@
-import {ActionType} from '../actions';
+import {ActionType, ActionTypeDetails} from '../actions';
 
 const initialState = {
   isLoaded: false,
-  entities: [],
+  ids: [],
 };
 
-export const offers = (state = initialState, action) => {
+export const favorites = (state = initialState, action) => {
 
   switch (action.type) {
-    case
+    case ActionType.UPDATE_OFFERS + ActionTypeDetails.FAVORITES:
+      return {
+        ...state,
+        isLoaded: true,
+        ids: action.payload.map((fav) => fav.id)
+      };
+    case ActionType.UPDATE_OFFERS + ActionTypeDetails.FAVORITES + ActionTypeDetails.CLEAR:
+      return initialState;
 
     default: return state;
   }

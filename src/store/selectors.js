@@ -9,6 +9,11 @@ export const currentUserSelector = (state) => state.currentUser;
 export const sortOrderSelector = (state) => state.sortOrder;
 export const propsIdSelector = (_state, props) => props.id;
 export const serverAvailabilitySelector = (state) => state.serverAvailability;
+export const isRoomLoadedSelector = (state) => state.room.isRoomLoaded;
+export const isNearbyLoadedSelector = (state) => state.room.isNearbyLoaded;
+export const nearIdsSelector = (state) => state.room.nearIds;
+export const isFavoritesLoadedSelector = (state) => state.favorites.isLoaded;
+export const favoritesIdsSelector = (state) => state.favorites.ids;
 
 export const offerByIdSelector = createSelector(
     allOffersSelector,
@@ -17,6 +22,18 @@ export const offerByIdSelector = createSelector(
 );
 
 export const createOfferByIdSelector = () => offerByIdSelector;
+
+export const nearOffersSelector = createSelector(
+    allOffersSelector,
+    nearIdsSelector,
+    (all, ids) => ids.map((id) => all.find((offer) => offer.id === id))
+);
+
+export const favoritesSelector = createSelector(
+    allOffersSelector,
+    favoritesIdsSelector,
+    (all, ids) => ids.map((id) => all.find((offer) => offer.id === id))
+);
 
 
 export const offersInCitySelector = createSelector(

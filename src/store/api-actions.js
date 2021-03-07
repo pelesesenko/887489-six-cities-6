@@ -21,6 +21,12 @@ export const fetchOffers = () => (dispatch, _getState, api) => (
   .then(() => handleSuccess(dispatch))
   .catch((err) => handleServerError(err, dispatch))
 );
+export const fetchUpdateOffers = (url, details) => (dispatch, _getState, api) => (
+  api.get(url)
+  .then(({data}) => dispatch(ActionCreator.updateOffers(data, details)))
+  .then(() => handleSuccess(dispatch))
+  .catch((err) => handleServerError(err, dispatch))
+);
 
 export const checkAuth = () => (dispatch, _getState, api) => (
   api.get(APIRoutes.LOGIN)
@@ -54,9 +60,9 @@ export const logout = () => (dispatch, _getState, api) => (
   .catch((err) => handleServerError(err, dispatch))
 );
 
-export const resetFavoriteStatus = (id, status) => (dispatch, _getState, api) => (
+export const resetFavoriteStatus = (id, status, details) => (dispatch, _getState, api) => (
   api.post(APIRoutes.FAVORITES + id + `/` + status)
-  .then(({data}) => dispatch(ActionCreator.updateOffers(data)))
+  .then(({data}) => dispatch(ActionCreator.updateOffers(data, details)))
   .then(() => handleSuccess(dispatch))
   .catch((err) => handleServerError(err, dispatch))
 );

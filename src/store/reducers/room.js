@@ -1,30 +1,29 @@
-import {ActionType} from '../actions';
+import {ActionType, ActionTypeDetails} from '../actions';
 
 const initialState = {
   isRoomLoaded: false,
-  roomId: null,
   isNearbyLoaded: false,
-  nearbyIds: [],
+  nearIds: [],
 };
 
 export const room = (state = initialState, action) => {
 
   switch (action.type) {
-    case ActionType.UPDATE_OFFERS_ROOM:
+    case ActionType.UPDATE_OFFERS + ActionTypeDetails.ROOM:
       return {
         ...state,
         isRoomLoaded: true,
-        roomId: action.payload.id
       };
 
-    case ActionType.UPDATE_OFFERS_NEARBY:
+    case ActionType.UPDATE_OFFERS + ActionTypeDetails.ROOM + ActionTypeDetails.CLEAR:
+      return initialState;
+
+    case ActionType.UPDATE_OFFERS + ActionTypeDetails.NEARBY:
       return {
         ...state,
         isNearbyLoaded: true,
-        nearbyIds: action.payload.map((nearRoom) => nearRoom.id)
+        nearIds: action.payload.map((nearRoom) => nearRoom.id)
       };
-      case ActionType.UPDATE_OFFERS_ROOM_CLEAR:
-      return initialState;
 
     default: return state;
   }

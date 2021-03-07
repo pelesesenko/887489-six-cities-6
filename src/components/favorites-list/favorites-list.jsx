@@ -1,13 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {hotelsPropTypes} from '../../prop-types';
+import {groupOffersByCity} from '../../services/utilities';
 
 import FavoritesGroup from '../favorites-group/favorites-group';
 
 const FavoritesList = ({favorites}) => {
+  const groupedFavorites = groupOffersByCity(favorites);
   return (
     <ul className="favorites__list">
-      {favorites.map((group) =>
+      {groupedFavorites.map((group) =>
         <FavoritesGroup group={group} key={group.cityName} />
       )}
     </ul>
@@ -15,10 +16,7 @@ const FavoritesList = ({favorites}) => {
 };
 
 FavoritesList.propTypes = {
-  favorites: PropTypes.arrayOf(PropTypes.shape({
-    cityName: PropTypes.string.isRequired,
-    offersInCity: hotelsPropTypes
-  }))
+  favorites: hotelsPropTypes
 };
 
 export default FavoritesList;

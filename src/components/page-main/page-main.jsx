@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import {connect} from 'react-redux';
 import {ActionCreator} from '../../store/actions';
 import {
@@ -32,9 +32,9 @@ const PageMain = (props) => {
 
   const [activeOfferId, setActiveOfferId] = useState(null);
 
-  const onChangeActiveOffer = (id) => {
+  const onChangeActiveOffer = useCallback((id) => {
     setActiveOfferId(id);
-  };
+  }, []);
 
   const mapStyle = {
     height: `100%`

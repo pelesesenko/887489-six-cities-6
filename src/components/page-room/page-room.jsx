@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {connect} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
-import {hotelPropTypes} from '../../prop-types';
-import {useHistory} from 'react-router-dom';
 import {ErrorStatus, AppPaths, APIRoutes} from '../../constants';
-import {createApi} from '../../services/api';
-import {ActionCreator} from '../../store/actions';
+import {simpleApi} from '../../services/api';
+import {ActionCreator, ActionTypeDetails} from '../../store/actions';
 import {resetFavoriteStatus} from '../../store/api-actions';
-import {offerByIdSelector} from '../../store/selectors';
+import {offerByIdSelector, nearOffersSelector} from '../../store/selectors';
 
 
 import Header from '../header/header';
@@ -18,40 +16,37 @@ import RoomGood from '../room-good/room-good';
 import ReviewsList from '../reviews-list/reviews-list';
 import Map from '../map/map';
 import NearbyList from '../nearby-list/nearby-list';
+import history from '../../browser-history';
 
 import {prepareRating, upFirst} from '../../services/utilities';
 
-const PageRoom = ({id, isAuthorized, onOffersUpdate, room, onResetFavoriteStatus, onLoadError, onLoadSuccess}) => {
-  const history = useHistory();
+const PageRoom = (props) => {
 
-  const [isRoomUpdated, setRoomUpdated] = useState(false);
+  const {id, isAuthorized, isRoomLoaded, isNearbyLoaded} = props;
+
   const [reviews, setReviews] = useState(null);
-  const [nearOffers, setNearOffers] = useState(null);
 
-  const roomApi = createApi(
-      () => {
-        history.push(AppPaths.NOT_FOUND);
-      },
-      ErrorStatus.NOT_FOUND
-  );
+  const room = useSelector((state) => offerByIdSelector(state, props));
+  const nearOffers = useSelector((state) => nearOffersSelector(state));
 
-  const roomDataApi = createApi();
+  const dispatch = useDispatch();
+
+  const commentsUrl = APIRoutes.COMMENTS + id;
+
+  const onLoadSuccess = () => {
+    dispatch(ActionCreator.setServerAvailability(true));
+  };
+
+  const onLoadError = (err) => {
+    const {response} = err;
+    if (response.status !== ErrorStatus.BAD_REQUEST) {
+      dispatch(ActionCreator.setServerAvailability(false));
+    }
+  };
 
   useEffect(() => {
-    roomApi.get(APIRoutes.OFFERS + id)
-    .then(({data}) => onOffersUpdate(data))
-    .then(() => setRoomUpdated(true))
-    .then(() => onLoadSuccess())
-    .catch((err) => onLoadError(err));
-
-    roomDataApi.get(APIRoutes.COMMENTS + id)
+    simpleApi.get(commentsUrl)
     .then(({data}) => setReviews(data))
-    .then(() => onLoadSuccess())
-    .catch((err) => onLoadError(err));
-
-    roomDataApi.get(APIRoutes.OFFERS + id + APIRoutes.NEARBY)
-    .then(({data}) => onOffersUpdate(data))
-    .then((data) => setNearOffers(data))
     .then(() => onLoadSuccess())
     .catch((err) => onLoadError(err));
   }, [id]);
@@ -66,7 +61,7 @@ const PageRoom = ({id, isAuthorized, onOffersUpdate, room, onResetFavoriteStatus
       return;
     }
     const status = room.isFavorite ? 0 : 1;
-    onResetFavoriteStatus(id, status);
+    dispatch(resetFavoriteStatus(id, status, ActionTypeDetails.FAVORITE));
   };
 
   const mapStyle = {
@@ -78,7 +73,7 @@ const PageRoom = ({id, isAuthorized, onOffersUpdate, room, onResetFavoriteStatus
   return (
     <div className="page">
       <Header/>
-      {!isRoomUpdated
+      {!isRoomLoaded
         ? <Loading />
         : (<main className="page__main page__main--property">
           <section className="property">
@@ -161,7 +156,7 @@ const PageRoom = ({id, isAuthorized, onOffersUpdate, room, onResetFavoriteStatus
               </div>
             </div>
             <section className="property__map map">
-              {!nearOffers
+              {!isNearbyLoaded
                 ? <Loading />
                 : <Map offers={[...nearOffers, room]} cityName={room.city.name} style={mapStyle} activeOfferId={id}/>}
             </section>
@@ -169,7 +164,7 @@ const PageRoom = ({id, isAuthorized, onOffersUpdate, room, onResetFavoriteStatus
           <div className="container">
             <section className="near-places places">
               <h2 className="near-places__title">Other places in the neighbourhood</h2>
-              {nearOffers === null
+              {!isNearbyLoaded
                 ? <Loading />
                 : <NearbyList nearOffersId={nearOffers.map((offer) => offer.id)}/>}
             </section>
@@ -181,38 +176,11 @@ const PageRoom = ({id, isAuthorized, onOffersUpdate, room, onResetFavoriteStatus
 
 PageRoom.propTypes = {
   isAuthorized: PropTypes.bool.isRequired,
-  onOffersUpdate: PropTypes.func.isRequired,
-  onResetFavoriteStatus: PropTypes.func.isRequired,
-  onLoadSuccess: PropTypes.func.isRequired,
-  onLoadError: PropTypes.func.isRequired,
-  room: hotelPropTypes,
+  isRoomLoaded: PropTypes.bool.isRequired,
+  isNearbyLoaded: PropTypes.bool.isRequired,
   id: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = (state, props) => ({
-  room: offerByIdSelector(state, props),
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onOffersUpdate(offers) {
-    dispatch(ActionCreator.updateOffers(offers));
-    return offers;
-  },
-  onResetFavoriteStatus(id, status) {
-    dispatch(resetFavoriteStatus(id, status));
-  },
-  onLoadSuccess() {
-    dispatch(ActionCreator.setServerAvailability(true));
-  },
-  onLoadError(err) {
-    const {response} = err;
-    if (response.status !== ErrorStatus.NOT_FOUND && response.status !== ErrorStatus.BAD_REQUEST) {
-      dispatch(ActionCreator.setServerAvailability(false));
-    }
-  },
-});
-
-export {PageRoom};
-export default connect(mapStateToProps, mapDispatchToProps)(PageRoom);
+export default PageRoom;
 
 

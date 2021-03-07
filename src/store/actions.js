@@ -6,17 +6,17 @@ export const ActionType = {
   LOAD_OFFERS: `data/load-offers`,
   REQUIRED_AUTHORIZATION: `user/required-authorization`,
   SET_CURRENT_USER: `user/set-current-user`,
-  UPDATE_OFFERS: `data/update-offers-`,
   SET_SERVER_AVAILABILITY: `api/set-server-availability`,
+  UPDATE_OFFERS: `data/update-offers`
 };
 
 export const ActionTypeDetails = {
-  _ROOM: `-room`,
-  _NEARBY: `-nearby`,
-  _FAVORITE: `-favorite`,
-  _FAVORITES: `-favorites`,
-  _CLEAR: `-clear`,
-}
+  ROOM: `-room`,
+  NEARBY: `-nearby`,
+  FAVORITE: `-favorite`,
+  FAVORITES: `-favorites`,
+  CLEAR: `-clear`,
+};
 
 export const ActionCreator = {
   setCity: (cityName) => ({

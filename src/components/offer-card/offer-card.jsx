@@ -8,6 +8,7 @@ import {isAuthorizedSelector, createOfferByIdSelector} from '../../store/selecto
 import {hotelPropTypes} from '../../prop-types';
 import {CardTypes, roomLink, AppPaths} from '../../constants';
 import {resetFavoriteStatus} from '../../store/api-actions';
+import {ActionTypeDetails} from '../../store/actions';
 
 const OfferCard = ({id, offer, cardType, onChangeActiveOffer = () => {}, onResetFavoriteStatus, isAuthorized}) => {
 
@@ -42,7 +43,7 @@ const OfferCard = ({id, offer, cardType, onChangeActiveOffer = () => {}, onReset
       return;
     }
     const status = isFavorite ? 0 : 1;
-    onResetFavoriteStatus(id, status);
+    onResetFavoriteStatus(id, status, ActionTypeDetails.FAVORITE);
   };
 
   return (

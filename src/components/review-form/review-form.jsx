@@ -2,8 +2,9 @@ import React, {useState, Fragment, useRef} from 'react';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 
-import {createApi} from '../../services/api';
-import {Grades, ReviewLength, APIRoutes, ErrorStatus} from '../../constants';
+import {simpleApi} from '../../services/api';
+import history from '../../browser-history';
+import {Grades, ReviewLength, APIRoutes, ErrorStatus, AppPaths} from '../../constants';
 import {ActionCreator} from '../../store/actions';
 
 const ReviewForm = ({roomId, onSentReview}) => {
@@ -17,14 +18,19 @@ const ReviewForm = ({roomId, onSentReview}) => {
   const dispatch = useDispatch();
 
   const handleSendError = (err) => {
+    const {response} = err;
+
+    if (response.status === ErrorStatus.UNAUTHORIZED) {
+      history.push(AppPaths.NOT_FOUND);
+      return;
+    }
+
     setSendingFailed(true);
     setIsDataSending(false);
     setTimeout(() => setSendingFailed(false), 4000);
-    const {response} = err;
-    if (response.status !== ErrorStatus.UNAUTHORIZED && response.status !== ErrorStatus.BAD_REQUEST) {
+    if (response.status !== ErrorStatus.BAD_REQUEST) {
       dispatch(ActionCreator.setServerAvailability(false));
     }
-
   };
 
   const isReviewFormValid = (
@@ -33,13 +39,12 @@ const ReviewForm = ({roomId, onSentReview}) => {
     reviewForm.rating
   );
 
-  const reviewFormApi = createApi();
   const handleSubmit = (evt) => {
     evt.preventDefault();
 
     setIsDataSending(true);
 
-    reviewFormApi.post(APIRoutes.COMMENTS + roomId, reviewForm)
+    simpleApi.post(APIRoutes.COMMENTS + roomId, reviewForm)
     .then(({data}) => onSentReview(data))
     .then(() => {
       setReviewForm({...initialState});

@@ -1,51 +1,36 @@
-import React, {useEffect, useState} from 'react';
-import {useDispatch} from 'react-redux';
-import {createApi} from '../../services/api';
+import React, {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import Header from '../header/header';
 import FavoritesList from '../favorites-list/favorites-list';
 import Loading from '../loading/loading';
 import {Link} from 'react-router-dom';
-import {groupOffersByCity} from '../../services/utilities';
-import {APIRoutes, ErrorStatus} from '../../constants';
-import {ActionCreator} from '../../store/actions';
+import {isFavoritesLoadedSelector, favoritesSelector} from '../../store/selectors';
+import {APIRoutes} from '../../constants';
+import {ActionCreator, ActionTypeDetails} from '../../store/actions';
+import {fetchUpdateOffers} from '../../store/api-actions';
 
 const PageFavorites = () => {
 
-  const [favorites, setFavorites] = useState(null);
-
+  const isFavoritesLoaded = useSelector((state) => isFavoritesLoadedSelector(state));
+  const favorites = useSelector((state) => favoritesSelector(state));
   const dispatch = useDispatch();
 
-  const onOffersUpd = (offers) => {
-    dispatch(ActionCreator.updateOffers(offers));
-    return offers;
-  };
-  const onLoadSuccess = () => {
-    dispatch(ActionCreator.setServerAvailability(true));
-  };
-  const onLoadError = (err) => {
-    const {response} = err;
-    if (response.status !== ErrorStatus.UNAUTHORIZED) {
-      dispatch(ActionCreator.setServerAvailability(false));
-    }
-  };
-
-  const dataApi = createApi();
+  const favoritesUrl = APIRoutes.FAVORITES;
 
   useEffect(() => {
-    dataApi.get(APIRoutes.FAVORITES)
-    .then(({data}) => onOffersUpd(data))
-    .then((data) => groupOffersByCity(data))
-    .then((data) => setFavorites(data))
-    .then(() => onLoadSuccess())
-    .catch((err) => onLoadError(err));
-  }, []);
 
+    dispatch(fetchUpdateOffers(favoritesUrl, ActionTypeDetails.FAVORITES));
+
+    return () => {
+      dispatch(ActionCreator.updateOffers(null, ActionTypeDetails.FAVORITES + ActionTypeDetails.CLEAR));
+    };
+  }, []);
 
   return (
     <div className={`page
-    ${favorites !== null && !favorites.length ? ` page--favorites-empty` : ``}`} >
+    ${isFavoritesLoaded && !favorites.length ? ` page--favorites-empty` : ``}`} >
       <Header/>
-      {favorites === null
+      {!isFavoritesLoaded
         ? <Loading />
 
         : (<main className={`page__main page__main--favorites${!favorites.length ? ` page__main--favorites-empty` : ``}`}>
