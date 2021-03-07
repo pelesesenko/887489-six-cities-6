@@ -6,9 +6,16 @@ export const ActionType = {
   LOAD_OFFERS: `data/load-offers`,
   REQUIRED_AUTHORIZATION: `user/required-authorization`,
   SET_CURRENT_USER: `user/set-current-user`,
-  UPDATE_OFFERS: `data/update-offers`,
+  UPDATE_OFFERS_: `data/update-offers-`,
   SET_SERVER_AVAILABILITY: `api/set-server-availability`,
 };
+
+export const ActionTypeDetails = {
+  ROOM: `room`,
+  NEARBY: `nearby`,
+  FAVORITE: `favorite`,
+  FAVORITES: `favorites`
+}
 
 export const ActionCreator = {
   setCity: (cityName) => ({
@@ -36,8 +43,8 @@ export const ActionCreator = {
     payload: user,
   }),
 
-  updateOffers: (offers) => ({
-    type: ActionType.UPDATE_OFFERS,
+  updateOffers: (offers, details) => ({
+    type: ActionType.UPDATE_OFFERS_ + details,
     payload: offers,
   }),
 
