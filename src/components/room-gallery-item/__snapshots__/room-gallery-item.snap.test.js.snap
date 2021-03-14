@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RoomGalleryItem should render correctly 1`] = `
+<div>
+  <div
+    class="property__image-wrapper"
+  >
+    <img
+      alt="Photo studio"
+      class="property__image"
+      src="https://assets.htmlacademy.ru/intensives/javascript-3/hotel/20.jpg"
+    />
+  </div>
+</div>
+`;

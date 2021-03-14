@@ -1,7 +1,7 @@
-import {ActionType} from '../actions';
-import {SortOrders} from '../../constants';
+import {ActionType} from '../../actions';
+import {SortOrders} from '../../../constants';
 
-const initialState = SortOrders.POPULAR;
+export const initialState = SortOrders.POPULAR;
 
 export const sortOrder = (state = initialState, action) => {
 

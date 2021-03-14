@@ -45,7 +45,8 @@ export const roomLink = `/offer/`;
 
 export const AuthorizationStatus = {
   AUTH: `AUTH`,
-  NO_AUTH: `NO_AUTH`
+  NO_AUTH: `NO_AUTH`,
+  NOT_CHECKED: `NOT_CHECKED`,
 };
 
 export const ErrorStatus = {

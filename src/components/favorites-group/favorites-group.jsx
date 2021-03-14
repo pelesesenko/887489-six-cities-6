@@ -35,4 +35,3 @@ FavoritesGroup.propTypes = {
 
 
 export default FavoritesGroup;
-

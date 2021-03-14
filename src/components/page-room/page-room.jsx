@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import {ErrorStatus, AppPaths, APIRoutes} from '../../constants';
@@ -24,7 +24,7 @@ const PageRoom = (props) => {
 
   const {id, isAuthorized, isRoomLoaded, isNearbyLoaded} = props;
 
-  const [reviews, setReviews] = useState(null);
+  const [reviews, setReviews] = React.useState(null);
 
   const room = useSelector((state) => offerByIdSelector(state, props));
   const nearOffers = useSelector((state) => nearOffersSelector(state));
@@ -54,6 +54,7 @@ const PageRoom = (props) => {
   const onSentReview = (newReviews) => {
     setReviews(newReviews);
   };
+  // simpleApi.get(APIRoutes.COMMENTS + 3 ).then(({data}) => console.log(JSON.stringify(data)))
 
   const handleFavButtonClick = () => {
     if (!isAuthorized) {
@@ -151,7 +152,7 @@ const PageRoom = (props) => {
                 </div>
                 <section className="property__reviews reviews">
                   {!reviews ? <Loading /> : <ReviewsList reviews={reviews}/>}
-                  {isAuthorized && <ReviewForm roomId={id} onSentReview={onSentReview}/>}
+                  {isAuthorized && <ReviewForm roomId={id} onSentReview={onSentReview} api={simpleApi}/>}
                 </section>
               </div>
             </div>

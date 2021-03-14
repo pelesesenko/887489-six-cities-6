@@ -69,4 +69,4 @@ const mapDispatchToProps = (dispatch) => ({
 
 export {Header};
 export default connect(mapStateToProps, mapDispatchToProps)(
-    React.memo(Header, (prev, next) => prev.isAuthorized === next.isAuthorized));
+    React.memo(Header, (prev, next) => prev.isAuthorized === next.isAuthorized && prev.user === next.user));

@@ -1,7 +1,7 @@
-import {ActionType} from '../actions';
+import {ActionType} from '../../actions';
 
 
-const initialState = {};
+export const initialState = {};
 
 export const currentUser = (state = initialState, action) => {
 

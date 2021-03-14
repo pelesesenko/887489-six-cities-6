@@ -2,6 +2,7 @@ import {SortOrders, AuthorizationStatus} from '../constants';
 import {createSelector} from 'reselect';
 
 export const isAuthorizedSelector = (state) => state.authorizationStatus === AuthorizationStatus.AUTH;
+export const authorizationStatusSelector = (state) => state.authorizationStatus;
 export const isOffersLoadedSelector = (state) => state.offers.isLoaded;
 export const allOffersSelector = (state) => state.offers.entities;
 export const currentCityNameSelector = (state) => state.currentCityName;

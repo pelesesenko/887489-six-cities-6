@@ -1,0 +1,130 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReviewsList should render correctly 1`] = `
+<div>
+  <h2
+    class="reviews__title"
+  >
+    Reviews · 
+    <span
+      class="reviews__amount"
+    >
+      2
+    </span>
+  </h2>
+  <ul
+    class="reviews__list"
+  >
+    <li
+      class="reviews__item"
+    >
+      <div
+        class="reviews__user user"
+      >
+        <div
+          class="reviews__avatar-wrapper user__avatar-wrapper"
+        >
+          <img
+            alt="Reviews avatar"
+            class="reviews__avatar user__avatar"
+            height="54"
+            src="https://assets.htmlacademy.ru/intensives/javascript-3/avatar/9.jpg"
+            width="54"
+          />
+        </div>
+        <span
+          class="reviews__user-name"
+        >
+          Sophie
+        </span>
+      </div>
+      <div
+        class="reviews__info"
+      >
+        <div
+          class="reviews__rating rating"
+        >
+          <div
+            class="reviews__stars rating__stars"
+          >
+            <span
+              style="width: 100%;"
+            />
+            <span
+              class="visually-hidden"
+            >
+              Rating
+            </span>
+          </div>
+        </div>
+        <p
+          class="reviews__text"
+        >
+          The deluxe room was a quite comfortable one with all the adequate facilities. The only thing that made me feel uncomfortable was the rude behavior of an impolite staff at the reception desk.
+        </p>
+        <time
+          class="reviews__time"
+          datetime="2/23/2021, 11:04:28 AM"
+        >
+          February 2021
+        </time>
+      </div>
+    </li>
+    <li
+      class="reviews__item"
+    >
+      <div
+        class="reviews__user user"
+      >
+        <div
+          class="reviews__avatar-wrapper user__avatar-wrapper"
+        >
+          <img
+            alt="Reviews avatar"
+            class="reviews__avatar user__avatar"
+            height="54"
+            src="https://assets.htmlacademy.ru/intensives/javascript-3/avatar/6.jpg"
+            width="54"
+          />
+        </div>
+        <span
+          class="reviews__user-name"
+        >
+          Kendall
+        </span>
+      </div>
+      <div
+        class="reviews__info"
+      >
+        <div
+          class="reviews__rating rating"
+        >
+          <div
+            class="reviews__stars rating__stars"
+          >
+            <span
+              style="width: 60%;"
+            />
+            <span
+              class="visually-hidden"
+            >
+              Rating
+            </span>
+          </div>
+        </div>
+        <p
+          class="reviews__text"
+        >
+          The house is very good, very happy, hygienic and simple living conditions around it are also very good. I hope to have the opportunity to come back. Thank you.
+        </p>
+        <time
+          class="reviews__time"
+          datetime="2/20/2021, 11:04:28 AM"
+        >
+          February 2021
+        </time>
+      </div>
+    </li>
+  </ul>
+</div>
+`;

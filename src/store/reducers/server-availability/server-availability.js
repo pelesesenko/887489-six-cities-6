@@ -1,6 +1,6 @@
-import {ActionType} from '../actions';
+import {ActionType} from '../../actions';
 
-const initialState = true;
+export const initialState = true;
 
 export const serverAvailability = (state = initialState, action) => {
 

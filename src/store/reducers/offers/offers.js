@@ -1,6 +1,6 @@
-import {ActionType, ActionTypeDetails} from '../actions';
+import {ActionType, ActionTypeDetails} from '../../actions';
 
-const initialState = {
+export const initialState = {
   isLoaded: false,
   entities: [],
 };
@@ -24,7 +24,7 @@ export const offers = (state = initialState, action) => {
 
         action.payload.forEach((newRoom) => {
           let isFound = false;
-          newState.entities = state.entities.map((oldRoom) => {
+          newState.entities = newState.entities.map((oldRoom) => {
             if (newRoom.id === oldRoom.id) {
               isFound = true;
               return newRoom;

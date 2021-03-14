@@ -1,6 +1,6 @@
-import {ActionType, ActionTypeDetails} from '../actions';
+import {ActionType, ActionTypeDetails} from '../../actions';
 
-const initialState = {
+export const initialState = {
   isLoaded: false,
   ids: [],
 };

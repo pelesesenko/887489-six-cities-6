@@ -4,8 +4,8 @@ import {AuthorizationStatus, APIRoutes, ErrorStatus} from '../constants';
 export const handleServerError = (err, dispatch) => {
   const {response} = err;
   if (response.status !== ErrorStatus.UNAUTHORIZED
-     && response.status !== ErrorStatus.NOT_FOUND
-     && response.status !== ErrorStatus.BAD_REQUEST
+    && response.status !== ErrorStatus.NOT_FOUND
+    && response.status !== ErrorStatus.BAD_REQUEST
   ) {
     dispatch(ActionCreator.setServerAvailability(false));
   }
@@ -30,11 +30,7 @@ export const fetchUpdateOffers = (url, details) => (dispatch, _getState, api) =>
 
 export const checkAuth = () => (dispatch, _getState, api) => (
   api.get(APIRoutes.LOGIN)
-  .then(({data}) => dispatch(ActionCreator.setCurrentUser({
-    id: data.id,
-    email: data.email,
-    name: data.name,
-  })))
+  .then(({data}) => dispatch(ActionCreator.setCurrentUser(data)))
   .then(() => dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH)))
   .then(() => handleSuccess(dispatch))
   .catch((err) => handleServerError(err, dispatch))
@@ -42,11 +38,7 @@ export const checkAuth = () => (dispatch, _getState, api) => (
 
 export const login = ({login: email, password}) => (dispatch, _getState, api) => (
   api.post(APIRoutes.LOGIN, {email, password})
-  .then(({data}) => dispatch(ActionCreator.setCurrentUser({
-    id: data.id,
-    email: data.email,
-    name: data.name,
-  })))
+  .then(({data}) => dispatch(ActionCreator.setCurrentUser(data)))
   .then(() => dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH)))
   .then(() => handleSuccess(dispatch))
   .catch((err) => handleServerError(err, dispatch))

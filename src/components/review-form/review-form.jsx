@@ -1,14 +1,12 @@
-import React, {useState, Fragment, useRef} from 'react';
+import React, {useState, Fragment, useRef, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 
-import {simpleApi} from '../../services/api';
 import history from '../../browser-history';
 import {Grades, ReviewLength, APIRoutes, ErrorStatus, AppPaths} from '../../constants';
 import {ActionCreator} from '../../store/actions';
 
-const ReviewForm = ({roomId, onSentReview}) => {
-  const formRef = useRef(null);
+const ReviewForm = ({roomId, onSentReview, api}) => {
   const initialState = {comment: ``, rating: 0};
 
   const [reviewForm, setReviewForm] = useState(initialState);
@@ -16,12 +14,17 @@ const ReviewForm = ({roomId, onSentReview}) => {
   const [isDataSending, setIsDataSending] = useState(false);
 
   const dispatch = useDispatch();
+  let ratingInputs;
+  const formRef = useRef(null);
+  useEffect(() => {
+    ratingInputs = [...document.querySelectorAll(`[name='rating']`)];// [...formRef.current.rating]
+  });
 
   const handleSendError = (err) => {
     const {response} = err;
 
     if (response.status === ErrorStatus.UNAUTHORIZED) {
-      history.push(AppPaths.NOT_FOUND);
+      history.push(AppPaths.LOGIN);
       return;
     }
 
@@ -34,8 +37,8 @@ const ReviewForm = ({roomId, onSentReview}) => {
   };
 
   const isReviewFormValid = (
-    reviewForm.comment.length > ReviewLength.MIN &&
-    reviewForm.comment.length < ReviewLength.MAX &&
+    reviewForm.comment.length >= ReviewLength.MIN &&
+    reviewForm.comment.length <= ReviewLength.MAX &&
     reviewForm.rating
   );
 
@@ -44,28 +47,30 @@ const ReviewForm = ({roomId, onSentReview}) => {
 
     setIsDataSending(true);
 
-    simpleApi.post(APIRoutes.COMMENTS + roomId, reviewForm)
+    api.post(APIRoutes.COMMENTS + roomId, reviewForm)
     .then(({data}) => onSentReview(data))
     .then(() => {
       setReviewForm({...initialState});
-      [...formRef.current.rating].forEach((el) => {
+      // [...formRef.current.rating]
+      ratingInputs.forEach((el) => {
         el.checked = false;
       });
     })
     .then(() => setIsDataSending(false))
+    // .then(() => console.dir(formRef.current.rating))
     .then(() => dispatch(ActionCreator.setServerAvailability(true)))
-    .catch((err) => handleSendError(err));
+    .catch((err) => handleSendError(err));//  handleSendError
   };
 
   const handleFieldChange = (evt) => {
     const {name, value} = evt.target;
     setReviewForm({...reviewForm, [name]: value});
   };
-
+  //  ref={formRef}
   return (
     <>
       {sendingFailed && <b>Something went wrong... Please, try again</b>}
-      <form onSubmit={handleSubmit} ref={formRef} className="reviews__form form" action="#" method="post">
+      <form onSubmit={handleSubmit} className="reviews__form form" ref={formRef} action="#" method="post">
         <label className="reviews__label form__label" htmlFor="review">Your review</label>
         <div className="reviews__rating-form form__rating">
           {Grades.map((grade, i) => (
@@ -97,6 +102,7 @@ const ReviewForm = ({roomId, onSentReview}) => {
 ReviewForm.propTypes = {
   roomId: PropTypes.number.isRequired,
   onSentReview: PropTypes.func.isRequired,
+  api: PropTypes.func.isRequired,
 };
 
 export default ReviewForm;

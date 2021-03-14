@@ -1,7 +1,7 @@
-import {ActionType} from '../actions';
-import {AuthorizationStatus} from '../../constants';
+import {ActionType} from '../../actions';
+import {AuthorizationStatus} from '../../../constants';
 
-const initialState = AuthorizationStatus.NO_AUTH;
+export const initialState = AuthorizationStatus.NOT_CHECKED;
 
 export const authorizationStatus = (state = initialState, action) => {
 

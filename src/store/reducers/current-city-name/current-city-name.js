@@ -1,7 +1,7 @@
-import {ActionType} from '../actions';
-import {Cities} from '../../constants';
+import {ActionType} from '../../actions';
+import {Cities} from '../../../constants';
 
-const initialState = Cities.PARIS;
+export const initialState = Cities.PARIS;
 
 export const currentCityName = (state = initialState, action) => {
 

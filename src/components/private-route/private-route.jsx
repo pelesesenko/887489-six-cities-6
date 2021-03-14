@@ -1,21 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Route, Redirect} from 'react-router-dom';
-import {connect} from 'react-redux';
-import {AppPaths} from '../../constants';
-import {isAuthorizedSelector} from '../../store/selectors';
+import {useSelector} from 'react-redux';
+import {AppPaths, AuthorizationStatus} from '../../constants';
+import {isAuthorizedSelector, authorizationStatusSelector} from '../../store/selectors';
+import Loading from '../loading/loading';
 
-const PrivateRoute = ({render, path, exact, isAuthorized}) => {
+const PrivateRoute = ({render, ...rest}) => {
+
+  const isAuthorized = useSelector((state) => isAuthorizedSelector(state));
+  const isNotChecked = useSelector((state) => authorizationStatusSelector(state) === AuthorizationStatus.NOT_CHECKED);
 
   return (
     <Route
-      path={path}
-      exact={exact}
+      {...rest}
       render={(routeProps) => {
         return (
-          isAuthorized
-            ? render(routeProps)
-            : <Redirect to={AppPaths.LOGIN} />
+          isNotChecked
+            ? <Loading/>
+            : isAuthorized
+            && render(routeProps)
+            || <Redirect to={AppPaths.LOGIN} />
         );
       }}
     />
@@ -23,15 +28,9 @@ const PrivateRoute = ({render, path, exact, isAuthorized}) => {
 };
 
 PrivateRoute.propTypes = {
-  isAuthorized: PropTypes.bool.isRequired,
   exact: PropTypes.bool.isRequired,
   path: PropTypes.string.isRequired,
   render: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  isAuthorized: isAuthorizedSelector(state),
-});
-
-export {PrivateRoute};
-export default connect(mapStateToProps)(PrivateRoute);
+export default PrivateRoute;
