@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RoomGood should render correctly 1`] = `
+<div>
+  <li
+    class="property__inside-item"
+  >
+    Baby seat
+  </li>
+</div>
+`;

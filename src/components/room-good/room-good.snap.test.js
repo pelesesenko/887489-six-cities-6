@@ -1,4 +1,3 @@
-import 'leaked-handles';
 import React from 'react';
 import {render} from '@testing-library/react';
 import {filled} from '../../services/test-wrapper/mock-states';
