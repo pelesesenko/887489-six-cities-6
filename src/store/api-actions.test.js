@@ -12,9 +12,9 @@ import {
 import {APIRoutes, AuthorizationStatus} from '../constants';
 
 const api = createApi(() => {});
-const apiMock = new MockAdapter(api);
 
 describe(`Async operations work correctly`, () => {
+  const apiMock = new MockAdapter(api);
 
   it(`Should make an API call to /hotels with handling success`, () => {
     const dispatch = jest.fn();

@@ -1,3 +1,4 @@
+import 'leaked-handles';
 import React from 'react';
 import {render, screen} from '@testing-library/react';
 import {TestWrapper} from '../../services/test-wrapper/test-wrapper';

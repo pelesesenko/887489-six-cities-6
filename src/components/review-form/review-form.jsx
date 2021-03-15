@@ -1,9 +1,7 @@
-import React, {useState, Fragment, useRef, useEffect} from 'react';
+import React, {useState, Fragment} from 'react';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
-
-import history from '../../browser-history';
-import {Grades, ReviewLength, APIRoutes, ErrorStatus, AppPaths} from '../../constants';
+import {Grades, ReviewLength, APIRoutes, ErrorStatus} from '../../constants';
 import {ActionCreator} from '../../store/actions';
 
 const ReviewForm = ({roomId, onSentReview, api}) => {
@@ -14,20 +12,9 @@ const ReviewForm = ({roomId, onSentReview, api}) => {
   const [isDataSending, setIsDataSending] = useState(false);
 
   const dispatch = useDispatch();
-  let ratingInputs;
-  const formRef = useRef(null);
-  useEffect(() => {
-    ratingInputs = [...document.querySelectorAll(`[name='rating']`)];// [...formRef.current.rating]
-  });
 
   const handleSendError = (err) => {
     const {response} = err;
-
-    if (response.status === ErrorStatus.UNAUTHORIZED) {
-      history.push(AppPaths.LOGIN);
-      return;
-    }
-
     setSendingFailed(true);
     setIsDataSending(false);
     setTimeout(() => setSendingFailed(false), 4000);
@@ -49,35 +36,29 @@ const ReviewForm = ({roomId, onSentReview, api}) => {
 
     api.post(APIRoutes.COMMENTS + roomId, reviewForm)
     .then(({data}) => onSentReview(data))
-    .then(() => {
-      setReviewForm({...initialState});
-      // [...formRef.current.rating]
-      ratingInputs.forEach((el) => {
-        el.checked = false;
-      });
-    })
+    .then(() => setReviewForm({...initialState}))
     .then(() => setIsDataSending(false))
-    // .then(() => console.dir(formRef.current.rating))
     .then(() => dispatch(ActionCreator.setServerAvailability(true)))
-    .catch((err) => handleSendError(err));//  handleSendError
+    .catch((err) => handleSendError(err));
   };
 
   const handleFieldChange = (evt) => {
     const {name, value} = evt.target;
     setReviewForm({...reviewForm, [name]: value});
   };
-  //  ref={formRef}
+
   return (
     <>
       {sendingFailed && <b>Something went wrong... Please, try again</b>}
-      <form onSubmit={handleSubmit} className="reviews__form form" ref={formRef} action="#" method="post">
+      <form onSubmit={handleSubmit} className="reviews__form form" action="#" method="post">
         <label className="reviews__label form__label" htmlFor="review">Your review</label>
         <div className="reviews__rating-form form__rating">
           {Grades.map((grade, i) => (
             <Fragment key={grade}>
               <input onChange={handleFieldChange} disabled={isDataSending}
+                checked={reviewForm.rating === Grades.length - i}
                 className="form__rating-input visually-hidden" name="rating"
-                defaultValue={Grades.length - i} id={`${Grades.length - i}-stars`} type="radio"/>
+                value={Grades.length - i} id={`${Grades.length - i}-stars`} type="radio"/>
               <label htmlFor={`${Grades.length - i}-stars`} className="reviews__rating-label form__rating-label" title={grade}>
                 <svg className="form__star-image" width={37} height={33}>
                   <use xlinkHref="#icon-star" />
@@ -102,7 +83,7 @@ const ReviewForm = ({roomId, onSentReview, api}) => {
 ReviewForm.propTypes = {
   roomId: PropTypes.number.isRequired,
   onSentReview: PropTypes.func.isRequired,
-  api: PropTypes.func.isRequired,
+  api: PropTypes.oneOfType([PropTypes.func, PropTypes.object]).isRequired
 };
 
 export default ReviewForm;

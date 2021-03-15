@@ -1,8 +1,8 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
-import {ErrorStatus, AppPaths, APIRoutes} from '../../constants';
-import {simpleApi} from '../../services/api';
+import {ErrorStatus, AppPaths, APIRoutes, AuthorizationStatus} from '../../constants';
+import {createApi} from '../../services/api';
 import {ActionCreator, ActionTypeDetails} from '../../store/actions';
 import {resetFavoriteStatus} from '../../store/api-actions';
 import {offerByIdSelector, nearOffersSelector} from '../../store/selectors';
@@ -32,6 +32,9 @@ const PageRoom = (props) => {
   const dispatch = useDispatch();
 
   const commentsUrl = APIRoutes.COMMENTS + id;
+  const api = createApi(() => {
+    dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.NO_AUTH));
+  }, ErrorStatus.UNAUTHORIZED);
 
   const onLoadSuccess = () => {
     dispatch(ActionCreator.setServerAvailability(true));
@@ -44,8 +47,8 @@ const PageRoom = (props) => {
     }
   };
 
-  useEffect(() => {
-    simpleApi.get(commentsUrl)
+  React.useEffect(() => {
+    api.get(commentsUrl)
     .then(({data}) => setReviews(data))
     .then(() => onLoadSuccess())
     .catch((err) => onLoadError(err));
@@ -152,7 +155,7 @@ const PageRoom = (props) => {
                 </div>
                 <section className="property__reviews reviews">
                   {!reviews ? <Loading /> : <ReviewsList reviews={reviews}/>}
-                  {isAuthorized && <ReviewForm roomId={id} onSentReview={onSentReview} api={simpleApi}/>}
+                  {isAuthorized && <ReviewForm roomId={id} onSentReview={onSentReview} api={api}/>}
                 </section>
               </div>
             </div>
