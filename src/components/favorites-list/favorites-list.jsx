@@ -6,6 +6,7 @@ import FavoritesGroup from '../favorites-group/favorites-group';
 
 const FavoritesList = ({favorites}) => {
   const groupedFavorites = groupOffersByCity(favorites);
+
   return (
     <ul className="favorites__list">
       {groupedFavorites.map((group) =>
