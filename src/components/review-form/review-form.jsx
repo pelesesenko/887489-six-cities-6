@@ -81,9 +81,9 @@ const ReviewForm = ({roomId, onSentReview, api}) => {
 };
 
 ReviewForm.propTypes = {
+  api: PropTypes.oneOfType([PropTypes.func, PropTypes.object]).isRequired,
   roomId: PropTypes.number.isRequired,
   onSentReview: PropTypes.func.isRequired,
-  api: PropTypes.oneOfType([PropTypes.func, PropTypes.object]).isRequired
 };
 
 export default ReviewForm;
