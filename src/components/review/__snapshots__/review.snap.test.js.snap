@@ -51,7 +51,7 @@ exports[`Review should render correctly 1`] = `
       </p>
       <time
         class="reviews__time"
-        datetime="2/23/2021, 11:04:28 AM"
+        datetime="02/23/2021"
       >
         February 2021
       </time>

@@ -10,7 +10,7 @@ const Review = ({review}) => {
     comment,
     date
   } = review;
-  const dateAttribute = new Date(date).toLocaleString(`en-CA`, {dateStyle: `short`});
+  const dateAttribute = new Date(date).toLocaleString(`en-CA`, {year: `numeric`, month: `2-digit`, day: `2-digit`});
   const dateText = new Date(date).toLocaleString(`en-CA`, {year: `numeric`, month: `long`});
 
   return (
