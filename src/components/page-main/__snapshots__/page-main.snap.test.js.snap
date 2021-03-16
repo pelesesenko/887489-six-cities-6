@@ -207,6 +207,7 @@ exports[`Snap test PageMain PageMain empty should render correctly 1`] = `
               </span>
               <span
                 class="places__sorting-type"
+                data-testid="control"
                 tabindex="0"
               >
                  
@@ -223,10 +224,12 @@ exports[`Snap test PageMain PageMain empty should render correctly 1`] = `
               </span>
               <ul
                 class="places__options places__options--custom"
+                data-testid="select"
               >
                 <li
                   class="places__option places__option--active"
                   data-order="Popular"
+                  data-testid="option"
                   tabindex="0"
                 >
                   Popular
@@ -234,6 +237,7 @@ exports[`Snap test PageMain PageMain empty should render correctly 1`] = `
                 <li
                   class="places__option"
                   data-order="Price: low to high"
+                  data-testid="option"
                   tabindex="0"
                 >
                   Price: low to high
@@ -241,6 +245,7 @@ exports[`Snap test PageMain PageMain empty should render correctly 1`] = `
                 <li
                   class="places__option"
                   data-order="Price: high to low"
+                  data-testid="option"
                   tabindex="0"
                 >
                   Price: high to low
@@ -248,6 +253,7 @@ exports[`Snap test PageMain PageMain empty should render correctly 1`] = `
                 <li
                   class="places__option"
                   data-order="Top rated first"
+                  data-testid="option"
                   tabindex="0"
                 >
                   Top rated first
@@ -975,6 +981,7 @@ exports[`Snap test PageMain PageMain should render correctly 1`] = `
               </span>
               <span
                 class="places__sorting-type"
+                data-testid="control"
                 tabindex="0"
               >
                  
@@ -991,10 +998,12 @@ exports[`Snap test PageMain PageMain should render correctly 1`] = `
               </span>
               <ul
                 class="places__options places__options--custom"
+                data-testid="select"
               >
                 <li
                   class="places__option places__option--active"
                   data-order="Popular"
+                  data-testid="option"
                   tabindex="0"
                 >
                   Popular
@@ -1002,6 +1011,7 @@ exports[`Snap test PageMain PageMain should render correctly 1`] = `
                 <li
                   class="places__option"
                   data-order="Price: low to high"
+                  data-testid="option"
                   tabindex="0"
                 >
                   Price: low to high
@@ -1009,6 +1019,7 @@ exports[`Snap test PageMain PageMain should render correctly 1`] = `
                 <li
                   class="places__option"
                   data-order="Price: high to low"
+                  data-testid="option"
                   tabindex="0"
                 >
                   Price: high to low
@@ -1016,6 +1027,7 @@ exports[`Snap test PageMain PageMain should render correctly 1`] = `
                 <li
                   class="places__option"
                   data-order="Top rated first"
+                  data-testid="option"
                   tabindex="0"
                 >
                   Top rated first

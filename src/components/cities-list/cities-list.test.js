@@ -1,6 +1,5 @@
 import React from 'react';
 import {render, screen} from '@testing-library/react';
-import {TestWrapper} from '../../services/test-wrapper/test-wrapper';
 import {Cities} from '../../constants';
 import userEvent from '@testing-library/user-event';
 
@@ -11,9 +10,7 @@ it(`CitiesList should render correctly`, () => {
   const handleCityClick = jest.fn();
 
   const {container} = render(
-      <TestWrapper >
-        <CitiesList currentCityName={Cities.COLOGNE} onSetCity={handleCityClick}/>
-      </TestWrapper>
+      <CitiesList currentCityName={Cities.COLOGNE} onSetCity={handleCityClick}/>
   );
   const activeElements = container.querySelectorAll(`.tabs__item--active`);
 

@@ -1,4 +1,3 @@
-// import Cities from '../../constants';
 
 export const ActionType = {
   SET_CITY: `main/set-city`,

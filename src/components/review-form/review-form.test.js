@@ -5,7 +5,6 @@ import {ReviewLength, APIRoutes} from '../../constants';
 import userEvent from '@testing-library/user-event';
 import MockAdapter from 'axios-mock-adapter';
 import {createApi} from '../../services/api';
-// import {simpleApi} from '../../services/api';
 
 import ReviewForm from './review-form';
 

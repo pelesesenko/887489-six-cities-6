@@ -57,7 +57,6 @@ const PageRoom = (props) => {
   const onSentReview = (newReviews) => {
     setReviews(newReviews);
   };
-  // simpleApi.get(APIRoutes.COMMENTS + 3 ).then(({data}) => console.log(JSON.stringify(data)))
 
   const handleFavButtonClick = () => {
     if (!isAuthorized) {

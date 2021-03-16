@@ -1,29 +1,26 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useCallback} from 'react';
 import PropTypes from 'prop-types';
 
 import {SortOrders} from '../../constants';
 
 const SortSelect = ({order, onSetOrder}) => {
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const handleSetOrder = () => {
     const newOrder = document.activeElement.dataset.order;
-    if (newOrder === order) {
-      setIsOpen(false);
-      return;
-    }
+    document.activeElement.blur();
+    document.removeEventListener(`keydown`, handleKeyDown);
     onSetOrder(newOrder);
   };
 
-  const handleKeyDown = (evt) => {
+  const handleKeyDown = useCallback((evt) => {
     if (evt.code === `Escape`) {
-      setIsOpen(false);
       document.activeElement.blur();
     } else if (evt.code === `Enter` && document.activeElement.dataset.order) {
       handleSetOrder();
     }
-  };
+  }, []);
 
   const handleFocus = () => {
     setIsOpen(true);
@@ -33,30 +30,30 @@ const SortSelect = ({order, onSetOrder}) => {
   const handleBlur = (evt) => {
     document.removeEventListener(`keydown`, handleKeyDown);
     const next = evt && evt.relatedTarget;
-    if (!next || !next.dataset.order) {
+    if (!next || !next.dataset || !next.dataset.order) {
       setIsOpen(false);
     }
   };
   useEffect(() => {
     return () => {
       document.removeEventListener(`keydown`, handleKeyDown);
-      setIsOpen(false);
     };
   }, [order, onSetOrder]);
 
   return (
     <form className="places__sorting" action="#" method="get">
       <span className="places__sorting-caption">Sort by</span>
-      <span onFocus={handleFocus} onBlur={handleBlur}
+      <span onFocus={handleFocus} onBlur={handleBlur} data-testid="control"
         className="places__sorting-type" tabIndex={0}>&nbsp;
         {`${order}`}
         <svg className="places__sorting-arrow" width={7} height={4}>
           <use xlinkHref="#icon-arrow-select" />
         </svg>
       </span>
-      <ul className={`places__options places__options--custom${isOpen ? ` places__options--opened` : ``}`}>
+      <ul data-testid="select"
+        className={`places__options places__options--custom${isOpen ? ` places__options--opened` : ``}`}>
         {Object.keys(SortOrders).map((key) => (
-          <li data-order={SortOrders[key]}
+          <li data-order={SortOrders[key]} data-testid="option"
             onClick={handleSetOrder} onFocus={handleFocus} onBlur={handleBlur}
             className={`places__option${SortOrders[key] === order ? ` places__option--active` : ``}`}
             tabIndex={0}
