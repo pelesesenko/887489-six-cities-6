@@ -60,4 +60,5 @@ export const ReviewLength = {
   MIN: 50,
 };
 
+export const reviewsListMaxLength = 10;
 

@@ -1,4 +1,4 @@
-import React, {useState, Fragment} from 'react';
+import React, {useState, Fragment, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import {Grades, ReviewLength, APIRoutes, ErrorStatus} from '../../constants';
@@ -10,6 +10,11 @@ const ReviewForm = ({roomId, onSentReview, api}) => {
   const [reviewForm, setReviewForm] = useState(initialState);
   const [sendingFailed, setSendingFailed] = useState(false);
   const [isDataSending, setIsDataSending] = useState(false);
+
+  let ratingInputs;
+  useEffect(() => {
+    ratingInputs = [...document.querySelectorAll(`[name='rating']`)];
+  });
 
   const dispatch = useDispatch();
 
@@ -36,7 +41,12 @@ const ReviewForm = ({roomId, onSentReview, api}) => {
 
     api.post(APIRoutes.COMMENTS + roomId, reviewForm)
     .then(({data}) => onSentReview(data))
-    .then(() => setReviewForm({...initialState}))
+    .then(() => {
+      setReviewForm({...initialState});
+      ratingInputs.forEach((input) => {
+        input.checked = false;
+      });
+    })
     .then(() => setIsDataSending(false))
     .then(() => dispatch(ActionCreator.setServerAvailability(true)))
     .catch((err) => handleSendError(err));
@@ -56,10 +66,10 @@ const ReviewForm = ({roomId, onSentReview, api}) => {
           {Grades.map((grade, i) => (
             <Fragment key={grade}>
               <input onChange={handleFieldChange} disabled={isDataSending}
-                checked={reviewForm.rating === Grades.length - i}
                 className="form__rating-input visually-hidden" name="rating"
-                value={Grades.length - i} id={`${Grades.length - i}-stars`} type="radio"/>
-              <label htmlFor={`${Grades.length - i}-stars`} className="reviews__rating-label form__rating-label" title={grade}>
+                defaultValue={Grades.length - i} id={`${Grades.length - i}-stars`} type="radio"/>
+              <label htmlFor={`${Grades.length - i}-stars`}
+                className="reviews__rating-label form__rating-label" title={grade}>
                 <svg className="form__star-image" width={37} height={33}>
                   <use xlinkHref="#icon-star" />
                 </svg>
