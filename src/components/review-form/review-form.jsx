@@ -1,20 +1,15 @@
-import React, {useState, Fragment, useEffect} from 'react';
+import React, {useState, Fragment} from 'react';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import {Grades, ReviewLength, APIRoutes, ErrorStatus} from '../../constants';
 import {ActionCreator} from '../../store/actions';
 
 const ReviewForm = ({roomId, onSentReview, api}) => {
-  const initialState = {comment: ``, rating: 0};
+  const initialState = {comment: ``, rating: `0`};
 
   const [reviewForm, setReviewForm] = useState(initialState);
   const [sendingFailed, setSendingFailed] = useState(false);
   const [isDataSending, setIsDataSending] = useState(false);
-
-  let ratingInputs;
-  useEffect(() => {
-    ratingInputs = [...document.querySelectorAll(`[name='rating']`)];
-  });
 
   const dispatch = useDispatch();
 
@@ -31,7 +26,7 @@ const ReviewForm = ({roomId, onSentReview, api}) => {
   const isReviewFormValid = (
     reviewForm.comment.length >= ReviewLength.MIN &&
     reviewForm.comment.length <= ReviewLength.MAX &&
-    reviewForm.rating
+    +reviewForm.rating
   );
 
   const handleSubmit = (evt) => {
@@ -41,12 +36,7 @@ const ReviewForm = ({roomId, onSentReview, api}) => {
 
     api.post(APIRoutes.COMMENTS + roomId, reviewForm)
     .then(({data}) => onSentReview(data))
-    .then(() => {
-      setReviewForm({...initialState});
-      ratingInputs.forEach((input) => {
-        input.checked = false;
-      });
-    })
+    .then(() => setReviewForm(initialState))
     .then(() => setIsDataSending(false))
     .then(() => dispatch(ActionCreator.setServerAvailability(true)))
     .catch((err) => handleSendError(err));
@@ -66,6 +56,7 @@ const ReviewForm = ({roomId, onSentReview, api}) => {
           {Grades.map((grade, i) => (
             <Fragment key={grade}>
               <input onChange={handleFieldChange} disabled={isDataSending}
+                checked={+reviewForm.rating === Grades.length - i}
                 className="form__rating-input visually-hidden" name="rating"
                 defaultValue={Grades.length - i} id={`${Grades.length - i}-stars`} type="radio"/>
               <label htmlFor={`${Grades.length - i}-stars`}
