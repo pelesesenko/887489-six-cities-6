@@ -6,19 +6,16 @@ export const upFirst = (string) => string.slice(0, 1).toUpperCase() + string.sli
 export const groupOffersByCity = (offers) => {
   return Object.values(
       offers.reduce((prev, current) => {
-        return prev[current.city.name]
-          ? {
-            ...prev,
-            [current.city.name]: {
-              cityName: current.city.name,
-              offersInCity: [...prev[current.city.name].offersInCity, current]
-            }
-          }
-          : {...prev, [current.city.name]: {cityName: current.city.name, offersInCity: [current]}};
+        if (prev[current.city.name]) {
+          prev[current.city.name].offersInCity.push(current);
+        } else {
+          prev[current.city.name] = {cityName: current.city.name, offersInCity: [current]};
+        }
+        return prev;
       }, {}));
 };
 
-export const snakeToCamelAdapter = (data) => {
+export const snakeToCamelAdapter = function f (data) {
 
   const wordAdapter = (word) => {
     return word[0].toUpperCase() + word.slice(1).toLowerCase();
@@ -36,12 +33,12 @@ export const snakeToCamelAdapter = (data) => {
   };
 
   if (data instanceof Array) {
-    return data.map((item) => snakeToCamelAdapter(item));
+    return data.map((item) => f(item));
   } else if (data instanceof Object) {
     let result = {};
     Object.keys(data).forEach((key) => {
       if (data[key] instanceof Object) {
-        result[stringAdapter(key)] = snakeToCamelAdapter(data[key]);
+        result[stringAdapter(key)] = f(data[key]);
       } else {
         result[stringAdapter(key)] = data[key];
       }

@@ -14,6 +14,17 @@ export const favorites = (state = initialState, action) => {
         isLoaded: true,
         ids: action.payload.map((fav) => fav.id)
       };
+    case ActionType.UPDATE_OFFERS + ActionTypeDetails.FAVORITE:
+      if (!state.isLoaded) {
+        return state;
+      }
+      const index = state.ids.indexOf(action.payload.id);
+      return {
+        ...state,
+        ids: index === -1
+          ? [...state.ids, action.payload.id]
+          : [...state.ids.slice(0, index), ...state.ids.slice(index + 1)]
+      };
     case ActionType.UPDATE_OFFERS + ActionTypeDetails.FAVORITES + ActionTypeDetails.CLEAR:
       return initialState;
 
